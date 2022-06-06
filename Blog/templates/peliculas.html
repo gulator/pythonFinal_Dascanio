@@ -1,0 +1,33 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<dir class="container">
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">nombre</th>
+        <th scope="col">trama</th>
+        <th scope="col">Detallada</th>
+        <th scope="col">Año</th>        
+        <th scope="col">imagen</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for n in peliculas %}
+        <tr>        
+        <th scope="row">{{n.id}}</th>
+        <td>{{n.nombre}}</td>
+        <td class="text-truncate" style="column-width: 100px;">{{n.trama_breve}}</td>
+        <td class="text-truncate" style="column-width: 150px;">{{n.trama_larga}}</td>
+        <td>{{n.anio}}</td>
+        <td style="height: 20px ;width: auto">{{n.imagen}}</td>        
+      </tr>
+      {% endfor %}     
+    </tbody>
+  </table>
+
+</dir>
+
+{% endblock %}

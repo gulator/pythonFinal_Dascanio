@@ -1,0 +1,10 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+<form action="">
+    <input type="range" name="range" step="1" min="0" max="10" value="" onchange="rangePrimary.value=value">
+    <input type="text" id="rangePrimary" />
+</form>
+
+
+{% endblock %}

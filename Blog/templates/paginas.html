@@ -1,0 +1,45 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+
+
+<table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">titulo</th>
+        <th scope="col">subtitulo</th>
+        <th scope="col">pelicula</th>
+        <th scope="col">cuerpo</th>
+        <th scope="col">autor</th>
+        <th scope="col">fecha</th>
+        <th scope="col">imagen</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for n in paginas %}
+        <tr>        
+        <th scope="row">{{n.id}}</th>
+        <td>{{n.titulo}}</td>
+        <td>{{n.subtitulo}}</td>
+        <td>{{n.pelicula}}</td>
+        <td class="text-truncate" style="column-width: 200px;">{{n.cuerpo}}</td>
+        <td>{{n.autor}}</td>
+        <td>{{n.fecha}}</td>
+        <td>
+          {% if n.imagen %}
+          <img src="{{n.imagen.url}}" alt="" height="50px"width="100px">          
+          {% else %}
+          <img src="{% static 'Blog/assets/img/thumbnail-default.jpg' %}" alt="" height="50px"width="100px">
+          {% endif %}
+
+        </td>
+        
+      </tr>
+      {% endfor %}     
+    </tbody>
+  </table>
+  
+
+{% endblock %}

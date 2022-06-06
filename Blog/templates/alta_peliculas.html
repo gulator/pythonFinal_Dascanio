@@ -1,0 +1,31 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<form action="alta_pelicula" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <label for="nombre" style="color: white;">Pelicula:</label>
+        <input type="text" name="nombre" placeholder="nombre pelicula">
+    </div>
+    <div>
+        <textarea type="text" name="trama_breve" placeholder="resumen" rows="4" cols="50" maxlength="250"></textarea>
+    </div>
+    <div>        
+        <textarea type="text" name="trama_larga" placeholder="trama de la pelicula" rows="10" cols="50"></textarea>
+    </div>
+    <div>
+        <label for="anio" style="color: white;">Año:</label>
+        <input type="number" name="anio" placeholder="año de lanzamiento">
+    </div>
+    <div>
+        <input type="file" name="imagen" placeholder="imagen de la portada" style="background-color: white;">
+    </div>
+    <div>
+        <input type="submit" value="enviar">
+    </div>
+</form>
+
+
+
+{% endblock %}

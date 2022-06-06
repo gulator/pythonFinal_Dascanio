@@ -1,0 +1,35 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<form action="alta_pagina" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>        
+        <input type="text" name="titulo" placeholder="titulo">
+    </div>
+    <div>        
+        <input type="text" name="subtitulo" placeholder="subtitulo">
+    </div>
+    <div>        
+        <input type="text" name="pelicula" placeholder="pelicula">
+    </div>    
+    <div>        
+        <textarea type="text" name="cuerpo" placeholder="texto" rows="10" cols="50"></textarea>
+    </div>
+    <div>        
+        <input type="text" name="autor" placeholder="tu nombre">
+    </div>
+    <div>        
+        <input type="hidden" value="{{fecha}}" name="fecha">
+    </div>    
+    <div>
+        <input type="file" name="imagen" placeholder="imagen de la portada" style="background-color: white;">
+    </div>
+    <div>
+        <input type="submit" value="enviar">
+    </div>
+</form>
+
+
+
+{% endblock %}

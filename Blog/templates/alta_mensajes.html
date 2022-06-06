@@ -1,0 +1,25 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+
+{% block bloque1 %}
+
+<form action="alta_mensaje" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>        
+        <input type="text" name="autor" placeholder="indique su nombre">
+    </div>    
+    <div>        
+        <textarea type="text" name="comentario" placeholder="deje su mensaje" rows="10" cols="50"></textarea>
+    </div>
+    <div>        
+        <input type="hidden" value="{{fecha}}" name="fecha" placeholder="fecha">
+    </div>
+    <div>
+        <input type="file" name="avatar" placeholder="avatar" style="background-color: white;">
+    </div>
+    <div>
+        <input type="submit" value="enviar">
+    </div>
+</form>
+
+{% endblock %}
