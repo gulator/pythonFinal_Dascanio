@@ -6631,8 +6631,8 @@ header.masthead {
 }
 
 .text-truncate {
-  white-space: normal; 
-  width: 150px; 
+  white-space: nowrap; 
+  width: 250px; 
   overflow: hidden;
   text-overflow: ellipsis; 
   border: 0px solid;

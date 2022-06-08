@@ -3,7 +3,7 @@
 {% block bloque1 %}
 
 
-
+{{texto}}
 <table class="table table-dark table-striped">
     <thead>
       <tr>
@@ -23,17 +23,25 @@
         <th scope="row">{{n.id}}</th>
         <td>{{n.titulo}}</td>
         <td>{{n.subtitulo}}</td>
-        <td>{{n.pelicula}}</td>
-        <td class="text-truncate" style="column-width: 200px;">{{n.cuerpo}}</td>
+        <td style="width: 180px;">{{n.pelicula}}</td>        
+        <td><p class="text-truncate" width="400">{{n.cuerpo}}</p></td>
         <td>{{n.autor}}</td>
-        <td>{{n.fecha}}</td>
+        <td style="width: 250px;">{{n.fecha}}</td>
         <td>
           {% if n.imagen %}
           <img src="{{n.imagen.url}}" alt="" height="50px"width="100px">          
           {% else %}
           <img src="{% static 'Blog/assets/img/thumbnail-default.jpg' %}" alt="" height="50px"width="100px">
-          {% endif %}
-
+          {% endif %}          
+        </td>
+        <td >
+          <a href="{% url 'eliminar_post' n.id %}">borrar</a>
+        </td>
+        <td >
+          <a href="{% url 'editar_post' n.id %}">editar</a>
+        </td>
+        <td >
+          <a href="{% url 'editar_imagen' n.id %}">cambiar imagen</a>
         </td>
         
       </tr>
