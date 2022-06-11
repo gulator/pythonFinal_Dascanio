@@ -1,0 +1,33 @@
+{% extends 'base-login.html' %}
+{% load static %}
+
+
+{% block bloque2 %}
+<div class="container">
+    <div style="margin: auto;width: 300px;align-content: center;">
+        <div class="shadow p-4 mb-4 bg-dark" style="opacity: 0.95;border-radius: 40px;">
+            <h3 style="color: grey;" align="center"> Login</h1>
+                <form action="" method="POST" style="color: whitesmoke;text-align: center;">
+                    {% csrf_token %}
+                
+                    {{formulario.as_p}}
+                
+                    <div class="button" align="center" style="padding-bottom: 5px;">
+                        <input type="submit" value="Iniciar sesion">
+                    </div>     
+                </form>
+                <form action="{% url 'Register' %}" method="POST" style="color: white;">
+                    {% csrf_token %}                               
+                    <div class="btn-sm" align="center">
+                        <input type="submit" value="Registrarse">
+                    </div>     
+                </form>
+                <p style="color: red ;">{{mensaje}}</p>
+        </div>
+    </div>    
+</div>
+
+
+
+
+{% endblock %}

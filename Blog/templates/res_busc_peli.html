@@ -1,0 +1,22 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+
+{% block bloque1 %}
+
+{% if peliculas %}
+{% for n in peliculas %}
+    <div style="color: white;">
+        <p>Pelicula: {{n.nombre}}</p>
+        <p class="text-truncate">Resumen: {{n.trama_breve}}</p>
+        <p class="text-truncate">Trama: {{n.trama_larga}}</p>
+        <p>Año: {{n.anio}}</p>
+        {% if n.imagen %}
+        <p><img src="{{n.imagen.url}}" alt="{{n.pelicula}}" height="100px" width="auto"></p>
+        {% endif %}
+    </div>
+    
+
+{% endfor %}
+{% endif %}
+
+{% endblock %}

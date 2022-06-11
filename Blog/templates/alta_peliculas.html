@@ -6,7 +6,7 @@
     {% csrf_token %}
     <div>
         <label for="nombre" style="color: white;">Pelicula:</label>
-        <input type="text" name="nombre" placeholder="nombre pelicula">
+        <input type="text" name="nombre" placeholder="nombre pelicula" maxlength="10 ">
     </div>
     <div>
         <textarea type="text" name="trama_breve" placeholder="resumen" rows="4" cols="50" maxlength="250"></textarea>

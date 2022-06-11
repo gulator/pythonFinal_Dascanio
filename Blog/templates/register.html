@@ -1,0 +1,29 @@
+{% extends 'base-login.html' %}
+{% load static %}
+
+
+{% block bloque2 %}
+<div class="container">
+    <div style="margin: auto;width: 350px;align-content: center;">
+    <div class="shadow p-4 mb-4 bg-dark rounded">
+        <h3 style="color: grey;" align="center"> Registrar usuario</h1>
+            <form action="" method="POST" style="color: white;" >
+                {% csrf_token %}
+            
+                {{form.as_p}}
+            
+                <div class="button">
+                    <input type="submit" value="Registrarse">
+                </div>
+            
+            
+            </form>
+            <p style="color: red ;">{{mensaje}}</p>
+    </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

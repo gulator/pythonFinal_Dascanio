@@ -1,0 +1,26 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+
+<form action="{% url 'editar_post' paginas.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div>
+        <p style="color: white;">Titulo: {{formulario.titulo}}</p> 
+        <p style="color: white;">Subtitulo: {{formulario.subtitulo}}</p> 
+        <p style="color: white;">Pelicula: {{formulario.pelicula}}</p> 
+        {{formulario.cuerpo}} 
+        <p style="color: white;">Autor: {{formulario.autor}}</p>
+        <div>
+            <input type="hidden" name="fecha" value="{{fecha}}">
+        </div>
+    </div>    
+    <div>        
+        <input type="submit" value="enviar">
+    </div>
+</form>
+
+
+
+{% endblock %}

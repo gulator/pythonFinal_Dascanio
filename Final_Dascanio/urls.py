@@ -18,12 +18,14 @@ from django.urls import path, include
 from Blog import views
 from django.conf import settings #para imagenes
 from django.conf.urls.static import static #para imagenes
+from django.shortcuts import redirect
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.inicio, name="inicio"),
-    path('Blog/', include('Blog.urls'))
+    path('', views.login_request),
+    path('Blog/', include('Blog.urls')),
+    #path('Login/', lambda req: redirect('/Blog/login'))
 ]
 
 if settings.DEBUG:

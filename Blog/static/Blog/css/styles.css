@@ -334,7 +334,7 @@ label {
 }
 
 button {
-  border-radius: 0;
+  border-radius: 5px;
 }
 
 button:focus:not(:focus-visible) {
@@ -3765,6 +3765,7 @@ textarea.form-control-lg {
   padding: 0.25rem 1rem;
   clear: both;
   font-weight: 400;
+  font-size: medium;
   color: #212529;
   text-align: inherit;
   text-decoration: none;
@@ -3808,8 +3809,8 @@ textarea.form-control-lg {
 
 .dropdown-menu-dark {
   color: #dee2e6;
-  background-color: #343a40;
-  border-color: rgba(0, 0, 0, 0.15);
+  background-color: #212529;
+  /*border-color: rgba(0, 0, 0, 0.15);*/
 }
 .dropdown-menu-dark .dropdown-item {
   color: #dee2e6;
@@ -11296,4 +11297,39 @@ header.masthead {
   .d-print-none {
     display: none !important;
   }
+}
+
+header.masthead {
+  position: relative;
+  background-color: #343a40;
+  background: url("../assets/img/bg-masthead.jpg") no-repeat center center;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+header.masthead:before {
+  content: "";
+  position: absolute;
+  background-color: #080e1a;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+header.masthead h1, header.masthead .h1 {
+  font-size: 2rem;
+}
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+  }
+  header.masthead h1, header.masthead .h1 {
+    font-size: 3rem;
+  }
+}
+
+.errorlist::marker {
+  color: 33, 37, 41;
 }

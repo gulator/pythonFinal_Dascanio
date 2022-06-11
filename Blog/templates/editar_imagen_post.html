@@ -1,0 +1,19 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+
+<form action="{% url 'editar_imagen' imagen.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div>
+        <p style="color: white;">{{formulario.imagen}}</p>         
+    </div>    
+    <div>        
+        <input type="submit" value="cambiar">
+    </div>
+</form>
+
+
+
+{% endblock %}
