@@ -23,7 +23,7 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.login_request),
+    path('', views.inicio, name='inico'),
     path('Blog/', include('Blog.urls')),
     #path('Login/', lambda req: redirect('/Blog/login'))
 ]

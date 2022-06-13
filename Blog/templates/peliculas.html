@@ -2,7 +2,7 @@
 {% load static %}
 {% block bloque1 %}
 
-<dir class="container">
+<!--<dir class="container">
   <table class="table table-dark table-striped">
     <thead>
       <tr>
@@ -27,7 +27,36 @@
       {% endfor %}     
     </tbody>
   </table>
+  
+</dir>-->
+<div class="container">
+  
+  
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for n in peliculas %}
+    <div class="col">
+      <div class="card mb-4" style="max-width: 480px;">      
+        <div class="row g-0">    
+          <div class="col-md-4">
+            <img src="{{n.imagen.url}}" class="img-pelis rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{n.nombre}}</h5>
+              <p class="card-text"><small class="text-muted">{{n.anio}}</small></p>
+              <p class="card-text justificado">{{n.trama_breve}}</p>
+              <a href="{% url 'pelicula_single' n.id %}" class="text-muted-it-grey small abajo" style="align-items: bottom;"">Leer mas...</a>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %} 
+  </div>    
+  
+</div>
 
-</dir>
+
 
 {% endblock %}

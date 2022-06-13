@@ -16,13 +16,25 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def inicio (request):
-    return render (request,'inicio.html')
+@login_required
+def inicio (request):    
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'inicio.html', {'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+    documento = {'avatar':no_avatar}
+    return render (request,'inicio.html',documento)
 
 
 def paginas (request):
-    paginas = Posteo.objects.all()
-    documento = {'paginas':paginas}
+    paginas = Posteo.objects.all()    
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'paginas.html', {'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+    documento = {'paginas':paginas,'avatar':no_avatar}
     return render (request,'paginas.html',documento)
 
 
@@ -32,13 +44,69 @@ def posteos (request):
 
 def peliculas (request):
     peliculas = Pelicula.objects.all()
-    documento = {'peliculas':peliculas}
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'peliculas.html', {'peliculas':peliculas,'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'    
+    documento = {'peliculas':peliculas,'avatar':no_avatar}
     return render (request,'peliculas.html',documento)
 
 
+def pelicula_single(request, id):    
+    pelicula = Pelicula.objects.get(id=id)
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'pelicula.html', {'pelicula':pelicula,'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+    documento = {'pelicula':pelicula,'avatar':no_avatar}        
+    
+    return render (request,'pelicula.html', documento)
+
+@login_required
+def pelicula_borrar(request, id):
+    pelicula = Pelicula.objects.get(id=id)
+    pelicula.delete()
+    peliculas = Pelicula.objects.all()
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'pelicula.html', {'peliculas':peliculas,'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+    documento = {'peliculas':peliculas,'avatar':no_avatar}
+
+    return render (request,'peliculas.html',documento)
+
+@login_required
+def editar_pelicula(request, id):
+    pelicula = Pelicula.request.get(id=id)
+
+    if request.method == 'POST':
+        formulario = Editar_Pelicula_Formulario(request.POST)
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            pelicula.nombre = datos['nombre']
+            pelicula.trama_breve = datos['trama_breve']
+            pelicula.trama_larga = datos['trama_larga']
+            pelicula.anio = datos['anio']
+            pelicula.save()
+
+    return render (request,'form_editar_pelicula')
+
+@login_required
+def pelicula_editar_imagen(request, id):
+    pass
+
+@login_required
 def mensajes (request):
     mensajes = Mensaje.objects.all()
-    documento = {'mensajes':mensajes}
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'mensajes.html', {'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+    documento = {'mensajes':mensajes,'avatar':no_avatar}
     return render (request,'mensajes.html',documento)
 
 
@@ -188,7 +256,12 @@ def login_request (request):
 
             if user is not None:
                 login(request,user)
-                return render (request,'inicio.html')
+                avatares = Avatar.objects.filter(user=request.user.id)
+                if avatares:                                  
+                    return render (request,'inicio.html', {'avatar':avatares[0].imagen.url})
+                else:
+                    no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+                    return render (request,'inicio.html', {'avatar':no_avatar})
             else:
                 return render (request,'login.html',{'mensaje':"Error. Fomulario erroneo."})    
 
@@ -206,6 +279,7 @@ def register (request):
     if request.method == 'POST':
         #form = UserCreationForm(request.POST)
         form = RegisterUserForm(request.POST)
+        
 
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -252,3 +326,26 @@ def editar_usuario (request):
 
 
     return render (request, 'editar_usuario.html', {'formulario':formulario,'usuario':usuario})
+
+
+def editar_avatar(request, id):
+
+    usuario = request.user.id    
+
+    if request.method == "POST":
+        formulario = Avatar_Formulario(request.POST, request.FILES)
+
+        if formulario.is_valid():            
+            avatar = Avatar (imagen=formulario.cleaned_data['imagen'])
+            avatar.save()
+            return render(request,'inicio.html')
+    
+    else:
+        formulario = Avatar_Formulario()    
+
+    return render (request,'editar_avatar.html',{'formulario':formulario})
+
+
+
+
+

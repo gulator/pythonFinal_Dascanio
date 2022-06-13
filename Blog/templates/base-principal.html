@@ -32,16 +32,21 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'mensajes' %}">Mensajes</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'posteos' %}">Posteos</a></li>
                         {% endif %}
+                        {% if user.is_staff == 1 %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'posteos' %}">Listados</a></li>
+                        {% endif %}
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted small" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-muted-it small" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                               {{user.username}}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                               <li><a class="dropdown-item" href="{% url 'editar_usuario' %}">Editar</a></li>
+                              <li><a class="dropdown-item" href="{% url 'editar_avatar' %}">Cambiar Avatar</a></li>
                               <li><a class="dropdown-item" href="{% url 'Logout' %}">Logout</a></li>                              
                             </ul>
                         </li>
+                        <img src="{{avatar}}" alt="Avatar" class="avatar">
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'Login' %}">Login</a></li>
                         {% endif %}

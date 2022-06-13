@@ -13,6 +13,11 @@ class Pelicula_formulario(forms.Form):
     anio = forms.IntegerField()
     imagen = forms.ImageField()
 
+class Editar_Pelicula_Formulario(forms.Form):
+    pass
+
+
+
 class Mensaje_formulario(forms.Form):
     autor = forms.CharField(max_length=60)
     fecha = forms.DateTimeField()
@@ -76,7 +81,11 @@ class Editar_Usuario_Form (UserCreationForm):
     class Meta:
         model = User
         fields = ['email','password1','password2','first_name','last_name']
-        help_texts = {k:"" for k in fields}    
+        help_texts = {k:"" for k in fields}  
+
+class Avatar_Formulario(forms.Form):
+    
+    imagen = forms.ImageField()
     
     
 

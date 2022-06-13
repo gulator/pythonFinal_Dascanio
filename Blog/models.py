@@ -1,6 +1,9 @@
+from distutils.command.upload import upload
+from pyexpat import model
 from django.db import models
 import datetime
 import os
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -32,5 +35,9 @@ class Mensaje (models.Model):
     fecha = models.DateTimeField()
     avatar = models.ImageField(upload_to = ruta, null=True, blank=True)
     comentario = models.TextField()
+
+class Avatar (models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='avatares', null=True, blank=True)
 
 

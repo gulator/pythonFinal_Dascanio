@@ -1,0 +1,37 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<form action="" method="POST">
+    
+    <div class="container">
+        <div class="row"></div>      
+            <div class="col" align="center">
+                <img src="{{pelicula.imagen.url}}" style="height: 300px;">
+            </div>
+            <div class="col">
+                    <div class="card-body-dark">
+                    {% if user.is_staff == 1 %}    
+                    <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_borrar' pelicula.id %}">borrar</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_pelicula' pelicula.id %}">editar</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_editar_imagen' pelicula.id %}">cambiar imagen</a>
+                    {% endif %}
+                    <br>
+                    <br>
+                    <h5 class="card-title" style="color: white;">{{pelicula.nombre}}</h5>
+                    <p class="card-text"><small class="text-muted">{{pelicula.anio}}</small></p>
+                    <p class="card-text justificado"style="color: white;">{{pelicula.trama_breve}}</p>
+                    <p class="card-text justificado"style="color: white;">{{pelicula.trama_larga}}</p>
+                    <a href="#" class="text-muted-it-grey small" >Leer mas...</a>                    
+            </div>
+        </div>           
+       
+    </div>
+
+</form>
+    
+
+
+
+
+{% endblock %}
