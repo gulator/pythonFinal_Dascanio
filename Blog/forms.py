@@ -21,8 +21,9 @@ class Editar_Pelicula_Formulario(forms.Form):
 class Mensaje_formulario(forms.Form):
     autor = forms.CharField(max_length=60)
     fecha = forms.DateTimeField()
-    avatar = forms.ImageField()
+    avatar = forms.ImageField(required=False)
     comentario = forms.CharField(widget=forms.Textarea)
+    id_clase = forms.IntegerField()
 
 class Pagina_formulario(forms.Form):
     titulo = forms.CharField(max_length=80)

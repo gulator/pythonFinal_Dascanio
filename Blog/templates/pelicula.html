@@ -3,7 +3,8 @@
 {% block bloque1 %}
 
 <form action="" method="POST">
-    
+    {% csrf_token %}
+
     <div class="container">
         <div class="row"></div>      
             <div class="col" align="center">
@@ -20,15 +21,48 @@
                     <br>
                     <h5 class="card-title" style="color: white;">{{pelicula.nombre}}</h5>
                     <p class="card-text"><small class="text-muted">{{pelicula.anio}}</small></p>
-                    <p class="card-text justificado"style="color: white;">{{pelicula.trama_breve}}</p>
-                    <p class="card-text justificado"style="color: white;">{{pelicula.trama_larga}}</p>
-                    <a href="#" class="text-muted-it-grey small" >Leer mas...</a>                    
+                    <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_breve}}</p>
+                    <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_larga}}</p>
+                                     
             </div>
         </div>           
        
     </div>
-
 </form>
+<br>
+    <section class="mb-5">
+        <div class="card" style="background-color:rgb(53, 53, 53)">
+            <div class="card-body">
+                <!-- Comment form-->
+                <form class="mb-4" action="" method="POST">
+                    {% csrf_token %}
+                    <textarea type="textarea" class="form-control" name="comentario" rows="3" placeholder="¡Deja tu comentario!" style="background-color: rgb(175, 175, 175);" maxlength="700"></textarea>
+                    <div><input type="hidden" value="{{fecha}}" name="fecha"></div>
+                    <div><input type="hidden" value="{{avatar.url}}" name="avatar"></div>
+                    <div><input type="hidden" value="{{autor}}" name="autor"></div>
+                    <div><input type="hidden" value="{{pelicula.id}}" name="id_clase"></div>
+                    <br>
+                    <input type="submit" value="enviar" class="btn btn-secondary btn-sm">
+                    <br>
+                </form>
+                <!-- Comments-->  
+                <br>
+                {% for m in mensajes %}              
+                <div class="d-flex">
+                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                    <div class="ms-3">
+                        <div class="fw-bold" style="margin-left: auto; color: rgb(214, 255, 255);">{{m.autor}}</div>
+                        <div class="text-muted-it-cream xsmall" style="margin-right:0;">{{m.fecha}}</div>
+                        <p style="color: rgb(231, 231, 231);">{{m.comentario}}</p>
+                    </div>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+
     
 
 

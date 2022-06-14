@@ -28,10 +28,11 @@ def inicio (request):
 
 
 def paginas (request):
-    paginas = Posteo.objects.all()    
+    paginas = Posteo.objects.all()   
+    print (paginas) 
     avatares = Avatar.objects.filter(user=request.user.id)
     if avatares:                                  
-        return render (request,'paginas.html', {'avatar':avatares[0].imagen.url})
+        return render (request,'paginas.html', {'avatar':avatares[0].imagen.url,'paginas':paginas})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
     documento = {'paginas':paginas,'avatar':no_avatar}
@@ -53,16 +54,30 @@ def peliculas (request):
     return render (request,'peliculas.html',documento)
 
 
-def pelicula_single(request, id):    
+def pelicula_single(request, id):   
+
     pelicula = Pelicula.objects.get(id=id)
     avatares = Avatar.objects.filter(user=request.user.id)
+    autor = request.user.username
+    mensajes = Mensaje.objects.filter(id_clase=id)
+    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")      
+    if request.method == 'POST':
+        formulario = Mensaje_formulario(request.POST, request.FILES)
+
+        print(formulario)
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'],id_clase=datos['id_clase'])
+            mensaje.save()
+        else:
+            print ("formulario invalido!")    
+
     if avatares:                                  
-        return render (request,'pelicula.html', {'pelicula':pelicula,'avatar':avatares[0].imagen.url})
+        return render (request,'pelicula.html', {'pelicula':pelicula,'avatar':avatares[0].imagen.url,'mensajes':mensajes,'autor':autor,'fecha':fecha})
     else:
-        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-    documento = {'pelicula':pelicula,'avatar':no_avatar}        
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'               
     
-    return render (request,'pelicula.html', documento)
+    return render (request,'pelicula.html', {'pelicula':pelicula,'avatar':no_avatar,'mensajes':mensajes,'autor':autor,'fecha':fecha})
 
 @login_required
 def pelicula_borrar(request, id):
@@ -103,7 +118,7 @@ def mensajes (request):
     mensajes = Mensaje.objects.all()
     avatares = Avatar.objects.filter(user=request.user.id)
     if avatares:                                  
-        return render (request,'mensajes.html', {'avatar':avatares[0].imagen.url})
+        return render (request,'mensajes.html', {'mensajes':mensajes,'avatar':avatares[0].imagen.url})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
     documento = {'mensajes':mensajes,'avatar':no_avatar}
@@ -132,10 +147,11 @@ def alta_mensaje (request):
         formulario = Mensaje_formulario(request.POST,request.FILES)
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'])
+            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'],id_clase=datos['id_clase'])
             mensaje.save()
-            texto = f'mensaje cargado con exito'
-            return render(request,'alta_mensajes.html',{'texto':texto})
+            #texto = f'mensaje cargado con exito'
+            #return render(request,'alta_mensajes.html',{'texto':texto})
+            pelicula_single(1)
         else:
             texto = f'error en uno de los campos'
             return render(request,'alta_mensajes.html',{'texto':texto})
@@ -153,7 +169,7 @@ def alta_pagina (request):
             pagina = Posteo(titulo = datos['titulo'],subtitulo = datos['subtitulo'],pelicula = datos['pelicula'],cuerpo = datos['cuerpo'],autor = datos['autor'],fecha = datos['fecha'],imagen = datos['imagen'],)
             pagina.save()
             texto = f'pagina cargada con exito'
-            return render(request,'alta_mensajes.html',{'texto':texto})
+            return render(request,'paginas.html',{'texto':texto})
         else:
             texto = f'error en uno de los campos'
             return render(request,'alta_paginas.html',{'texto':texto})
@@ -243,7 +259,7 @@ def editar_imagen (request, id):
 
 
 
-def login_request (request):
+"""def login_request (request):
 
     if request.method == 'POST':
         formulario = Login_formulario(request, data=request.POST)
@@ -263,7 +279,7 @@ def login_request (request):
                     no_avatar =   '/static/Blog/assets/img/noavatar.webp'
                     return render (request,'inicio.html', {'avatar':no_avatar})
             else:
-                return render (request,'login.html',{'mensaje':"Error. Fomulario erroneo."})    
+                return render (request,'login.html',{'mensaje':"Error. Formulario erroneo."})    
 
         else:
             formulario = Login_formulario()
@@ -343,7 +359,7 @@ def editar_avatar(request, id):
     else:
         formulario = Avatar_Formulario()    
 
-    return render (request,'editar_avatar.html',{'formulario':formulario})
+    return render (request,'editar_avatar.html',{'formulario':formulario})"""
 
 
 

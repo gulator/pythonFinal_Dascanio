@@ -213,6 +213,11 @@ small, .small {
   font-size: 0.875em;
 }
 
+xsmall, .xsmall {
+  font-size: 11px;
+}
+
+
 mark, .mark {
   padding: 0.2em;
   background-color: #fcf8e3;
@@ -7804,6 +7809,12 @@ header.masthead {
   font-style: oblique
 }
 
+.text-muted-it-cream {
+  --bs-text-opacity: 1;
+  color: aliceblue !important;
+  font-style: oblique
+}
+
 .text-black-50 {
   --bs-text-opacity: 1;
   color: rgba(0, 0, 0, 0.5) !important;
@@ -11361,6 +11372,11 @@ header.masthead h1, header.masthead .h1 {
 
 .justificado {
   font-size: 11px;
+  text-align: justify;
+}
+
+.justificado-single {
+  font-size: 14px;
   text-align: justify;
 }
 

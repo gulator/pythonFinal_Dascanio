@@ -23,8 +23,9 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.inicio, name='inico'),
+    path('', views.inicio, name='inicio'),
     path('Blog/', include('Blog.urls')),
+    path('Cuentas/', include('Cuentas.urls')),
     #path('Login/', lambda req: redirect('/Blog/login'))
 ]
 

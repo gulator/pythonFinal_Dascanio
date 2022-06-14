@@ -35,6 +35,7 @@ class Mensaje (models.Model):
     fecha = models.DateTimeField()
     avatar = models.ImageField(upload_to = ruta, null=True, blank=True)
     comentario = models.TextField()
+    id_clase = models.IntegerField()
 
 class Avatar (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
