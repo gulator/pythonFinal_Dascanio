@@ -1154,6 +1154,11 @@ progress {
     width: 16.6666666667%;
   }
 
+  .col-editar-peli{
+    width: 40%;
+    text-align: center;
+  }
+
   .col-md-auto {
     flex: 0 0 auto;
     width: auto;
@@ -2212,6 +2217,26 @@ progress {
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+.form-control-oscuro {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: rgb(153, 153, 153);
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -2782,6 +2807,22 @@ textarea.form-control-lg {
   background-color: #e9ecef;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
+}
+
+.mota {
+  background-color: #989fa8;
+}
+
+.oscuro {
+  background-color: #bec3c9;
+}
+
+.oscuro:focus {
+  
+  background-color: #bec3c9;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 .input-group-lg > .form-control,
@@ -11370,6 +11411,14 @@ header.masthead h1, header.masthead .h1 {
   border-radius: 50%;
 }
 
+.avatar-perfil {
+  vertical-align: middle;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
 .justificado {
   font-size: 11px;
   text-align: justify;
@@ -11384,4 +11433,24 @@ header.masthead h1, header.masthead .h1 {
   position: absolute;
   bottom: 3%;
   left: 36%;
+}
+
+.paginas {
+  position: absolute;
+  bottom: 3%;
+  left: 3%;
+}
+
+.bloque-perfil {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #2b3036;
+  background-clip: border-box;
+  border: 1px solid rgb(54,54,54);
+  border-radius: 0.25rem;
+  padding: 1%;
+  height: 400px;
 }

@@ -28,8 +28,7 @@ def inicio (request):
 
 
 def paginas (request):
-    paginas = Posteo.objects.all()   
-    print (paginas) 
+    paginas = Posteo.objects.all()       
     avatares = Avatar.objects.filter(user=request.user.id)
     if avatares:                                  
         return render (request,'paginas.html', {'avatar':avatares[0].imagen.url,'paginas':paginas})
@@ -38,8 +37,33 @@ def paginas (request):
     documento = {'paginas':paginas,'avatar':no_avatar}
     return render (request,'paginas.html',documento)
 
+def pagina_single(request, id):   
 
-def posteos (request):
+    pagina = Posteo.objects.get(id=id)
+    avatares = Avatar.objects.filter(user=request.user.id)
+    autor = request.user.username
+    mensajes = Mensaje.objects.filter(id_clase=id)
+    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")   
+
+    if request.method == 'POST':  #Crea los mensajes para cada pagina individual
+        formulario = Mensaje_formulario(request.POST, request.FILES)
+        
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'],id_clase=datos['id_clase'])
+            mensaje.save()
+        else:
+            print ("formulario invalido!")    
+
+    if avatares:                                  
+        return render (request,'pagina.html', {'pagina':pagina,'avatar':avatares[0].imagen.url,'mensajes':mensajes,'autor':autor,'fecha':fecha})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'               
+    
+    return render (request,'pagina.html', {'pagina':pagina,'avatar':no_avatar,'mensajes':mensajes,'autor':autor,'fecha':fecha})
+
+
+def posteos (request): #borrar
     return render (request,'posteos.html')
 
 
@@ -95,7 +119,7 @@ def pelicula_borrar(request, id):
 
 @login_required
 def editar_pelicula(request, id):
-    pelicula = Pelicula.request.get(id=id)
+    pelicula = Pelicula.objects.get(id=id)
 
     if request.method == 'POST':
         formulario = Editar_Pelicula_Formulario(request.POST)
@@ -107,7 +131,15 @@ def editar_pelicula(request, id):
             pelicula.anio = datos['anio']
             pelicula.save()
 
-    return render (request,'form_editar_pelicula')
+            pelicula = Pelicula.objects.get(id=id)
+
+            return render(request, 'pelicula.html', {'pelicula':pelicula})
+
+    else: 
+                
+        formulario = Pelicula_formulario(initial={'nombre':pelicula.nombre,'trama_breve':pelicula.trama_breve,'trama_larga':pelicula.trama_larga,'anio':pelicula.anio})        
+
+    return render (request,'form_editar_pelicula.html',{'formulario':formulario,'pelicula':pelicula})
 
 @login_required
 def pelicula_editar_imagen(request, id):
@@ -216,8 +248,7 @@ def editar_post (request, id):
             paginas.fecha = datos['fecha']            
             paginas.save()
 
-            paginas = Posteo.objects.all()
-            print (paginas)
+            paginas = Posteo.objects.all()           
             return render (request,'paginas.html',{"paginas":paginas})
         else:
             texto = f"algunos campos contienen errores"
@@ -258,109 +289,16 @@ def editar_imagen (request, id):
     return render (request,'editar_imagen_post.html', {'formulario':formulario,'imagen':imagen})
 
 
+def perfil (request, id):
 
-"""def login_request (request):
-
-    if request.method == 'POST':
-        formulario = Login_formulario(request, data=request.POST)
-
-        if formulario.is_valid():
-            usuario = formulario.cleaned_data.get('username')
-            contrasenia = formulario.cleaned_data.get('password')
-
-            user = authenticate(username=usuario, password=contrasenia)
-
-            if user is not None:
-                login(request,user)
-                avatares = Avatar.objects.filter(user=request.user.id)
-                if avatares:                                  
-                    return render (request,'inicio.html', {'avatar':avatares[0].imagen.url})
-                else:
-                    no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-                    return render (request,'inicio.html', {'avatar':no_avatar})
-            else:
-                return render (request,'login.html',{'mensaje':"Error. Formulario erroneo."})    
-
-        else:
-            formulario = Login_formulario()
-            return render (request, 'login.html', {'formulario':formulario, 'mensaje': "Error. Datos de ingreso incorrectos"})
-
-    formulario = Login_formulario()        
-
-    return render (request, 'login.html',{'formulario':formulario})
-
-
-def register (request):
-
-    if request.method == 'POST':
-        #form = UserCreationForm(request.POST)
-        form = RegisterUserForm(request.POST)
-        
-
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            form.save()
-
-            return render(request,'inicio.html',{'mensaje':'Usuario Creado'})    
-
-       
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:                                  
+        return render (request,'perfil.html', {'avatar':avatares[0].imagen.url})
     else:
-        #form = UserCreationForm()
-        form = RegisterUserForm(request.POST)       
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+    documento = {'avatar':no_avatar}
 
-    return render (request, 'register.html',{'form':form})
-         
-
-
-def logout_usuario (request):
-    logout(request)
-
-    return redirect ('Login')
-
-
-def editar_usuario (request):
-
-    usuario = request.user
-
-    if request.method == 'POST':
-        formulario = Editar_Usuario_Form(request.POST)
-
-        if formulario.is_valid():
-             datos = formulario.cleaned_data
-
-             usuario.email = datos['email']
-             contrasenia = datos['password1']
-             usuario.setpassword = contrasenia
-             usuario.first_name = datos['first_name']
-             usuario.last_name = datos['last_name']
-             usuario.save()
-
-             return render (request,'paginas.html',{'msg_edit_usuario':'datos actualizados'})
-        
-    else:
-        formulario = Editar_Usuario_Form(initial={'email':usuario.email,'first_name':usuario.first_name,'last_name':usuario.last_name})
-
-
-    return render (request, 'editar_usuario.html', {'formulario':formulario,'usuario':usuario})
-
-
-def editar_avatar(request, id):
-
-    usuario = request.user.id    
-
-    if request.method == "POST":
-        formulario = Avatar_Formulario(request.POST, request.FILES)
-
-        if formulario.is_valid():            
-            avatar = Avatar (imagen=formulario.cleaned_data['imagen'])
-            avatar.save()
-            return render(request,'inicio.html')
-    
-    else:
-        formulario = Avatar_Formulario()    
-
-    return render (request,'editar_avatar.html',{'formulario':formulario})"""
-
+    return render (request, 'perfil.html',documento)
 
 
 

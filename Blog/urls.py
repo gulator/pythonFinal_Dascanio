@@ -6,9 +6,11 @@ urlpatterns = [
 
 path('inicio',views.inicio, name='inicio'),    
 path('paginas', views.paginas, name='paginas'),
+path('pagina_single/<int:id>', views.pagina_single, name='pagina_single'),
 path('posteos', views.posteos, name='posteos'),
 path('peliculas', views.peliculas,name='peliculas'),
 path('pelicula_single/<int:id>', views.pelicula_single, name='pelicula_single'),
+path('perfil/<int:id>', views.perfil, name='perfil'),
 path('pelicula_borrar/<int:id>', views.pelicula_borrar, name='pelicula_borrar'),
 path('editar_pelicula/<int:id>', views.editar_pelicula, name='editar_pelicula'),
 path('pelicula_editar_imagen/<int:id>',views.pelicula_editar_imagen, name='pelicula_editar_imagen'),

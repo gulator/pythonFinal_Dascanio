@@ -14,7 +14,7 @@ def ruta (request, filename):
     nombre_nuevo = "%s%s" % ( hora, nombre_viejo)
     return os.path.join ('', nombre_nuevo)
 
-class Posteo (models.Model):
+class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
     titulo = models.CharField(max_length=80)
     subtitulo = models.CharField(max_length=80)
     pelicula = models.CharField(max_length=70)

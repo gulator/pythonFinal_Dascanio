@@ -1,0 +1,81 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+
+{% block bloque1 %}
+
+<div class="container">
+    <div class="bloque-perfil">
+        <div class="row row-cols-1 row-cols-md-2 g-2">
+            <form action="" method="POST" style="width: 40%;">
+                {% csrf_token %}
+                <div class="col" style="text-align: center;width: 100%;align-items: center;">
+                    <br>
+                    <img src="{{avatar}}" alt="Avatar" class="avatar-perfil"><br><br>
+                    <button class="btn btn-secondary btn-sm" style="padding: 1%;">cambiar avatar</button>
+                </div>
+            </form>           
+            <form action="" method="POST" style="width: 60%;">
+                {% csrf_token %}
+                <div class="col" style="width: 80%;">
+                    <h3 style="color: rgb(236, 255, 168);">Gulator</h3>
+                    <div class="input-group mb-3">                    
+                        <span class="input-group-text mota" id="basic-addon1">Nombre</span>
+                        <input type="text" class="form-control form-control-sm oscuro" name="first_name">
+                    </div>
+                    <div class="input-group mb-3">                    
+                        <span class="input-group-text mota" id="basic-addon1">Apellido</span>
+                        <input type="text" class="form-control form-control-sm oscuro" name="last_name">
+                    </div>
+                    <div class="input-group mb-3">                    
+                        <span class="input-group-text mota" id="basic-addon1">Mail</span>
+                        <input type="text" class="form-control form-control-sm oscuro" name="email">
+                    </div>
+    
+                    <hr>
+    
+                    <div class="text-muted-it-cream" style="font-size: 11px; color:rgb(236, 255, 168);">
+                        Cambiar Contraseña
+                    </div>
+                    <div class="input-group mb-3">                    
+                        <span class="input-group-text mota" id="basic-addon1">Contraseña</span>
+                        <input type="text" class="form-control form-control-sm oscuro" name="password1">
+                    </div>
+                    <div class="input-group mb-3">                    
+                        <span class="input-group-text mota" id="basic-addon1">Repetir</span>
+                        <input type="text" class="form-control form-control-sm oscuro" name="password2">
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="btn btn-secondary btn-sm" style="padding: 1%;">Actualizar perfil</button>
+                    </div>
+                </div>    
+            </form>
+        </div>
+    </div><br>
+</div>    
+    <div class="row">
+        <div class="col">
+            <h5 style="color: rgb(236, 255, 168);text-align: center;">Tus posteos</h5>
+            <table class="table table-dark table-striped">
+                <thead>
+                  <tr>                    
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>            
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+
+
+{% endblock %}

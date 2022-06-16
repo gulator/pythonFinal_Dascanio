@@ -8,13 +8,16 @@ from django.contrib.auth.models import User
 
 class Pelicula_formulario(forms.Form):
     nombre = forms.CharField(max_length=40)
-    trama_breve = forms.CharField(max_length=250)
+    trama_breve = forms.CharField(max_length=250,widget=forms.Textarea)
     trama_larga = forms.CharField (widget=forms.Textarea)
     anio = forms.IntegerField()
     imagen = forms.ImageField()
 
 class Editar_Pelicula_Formulario(forms.Form):
-    pass
+    nombre = forms.CharField(max_length=40)
+    trama_breve = forms.CharField(max_length=250, widget=forms.Textarea)
+    trama_larga = forms.CharField (widget=forms.Textarea)
+    anio = forms.IntegerField()
 
 
 
