@@ -1,0 +1,34 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+
+{% block bloque1 %}
+
+{% if paginas %}
+
+<div class="container"> 
+    <h3 style="color: rgb(236, 255, 168);">Paginas encontradas referidas a "{{nombre}}"</h3>
+    <div class="row row-cols-1 row-cols-md-2 g-2">
+      {% for n in paginas %}
+      <div class="col">}
+        <div>
+        </div>
+        <div class="card mb-4" style="max-width: 480px;">
+          <a href="#!"><img class="card-img-top" src="{{n.imagen.url}}" alt="..." /></a>
+          <div class="card-body" style="height: 200px;">
+              <div class="small text-muted tinny">{{n.autor}} | {{n.fecha}}</div>
+              <div class="small text-muted "><strong>Pelicula: {{n.pelicula}}</strong></div>
+              <h2 class="card-title h4">{{n.titulo}}</h2>
+              <p class="card-text">{{n.subtitulo}}</p>
+              <a href="{% url 'pagina_single' n.id %}" class="text-muted-it-grey small paginas" style="align-items: bottom;"">Leer mas...</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div> 
+  </div>
+    
+
+
+{% endif %}
+
+{% endblock %}

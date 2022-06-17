@@ -12,18 +12,18 @@
             </div>
             <div class="col">
                     <div class="card-body-dark">
-                    {% if user.is_staff == 1 %}    
-                    <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_borrar' pelicula.id %}">borrar</a>
-                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_pelicula' pelicula.id %}">editar</a>
-                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_imagen_pelicula' pelicula.id %}">cambiar imagen</a>
-                    {% endif %}
-                    <br>
-                    <br>
-                    <h5 class="card-title" style="color: white;">{{pelicula.nombre}}</h5>
-                    <p class="card-text"><small class="text-muted">{{pelicula.anio}}</small></p>
-                    <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_breve}}</p>
-                    <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_larga}}</p>
-                                     
+                        {% if user.is_staff == 1 %}    
+                        <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_borrar' pelicula.id %}">borrar</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'editar_pelicula' pelicula.id %}">editar</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'editar_imagen_pelicula' pelicula.id %}">cambiar imagen</a>
+                        {% endif %}    
+                        <br>
+                        <br>
+                        <h5 class="card-title" style="color: white;">{{pelicula.nombre}}</h5>
+                        <p class="card-text"><small class="text-muted">{{pelicula.anio}}</small></p>
+                        <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_breve}}</p>
+                        <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_larga}}</p>
+                              
             </div>
         </div>           
        

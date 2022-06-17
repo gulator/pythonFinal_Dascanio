@@ -9,16 +9,19 @@
         <div class="row"></div>      
             <div class="col" align="center">
                 <img src="{{pagina.imagen.url}}" style="height: 400px;">
-            </div>
+            </div><br>
             <div class="col">
                     <div class="card-body-dark">
                     {% if user.is_staff == 1 %}    
-                    <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_borrar' pagina.id %}">borrar</a>
-                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_pelicula' pagina.id %}">editar</a>
-                    <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_editar_imagen' pagina.id %}">cambiar imagen</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'eliminar_pagina' pagina.id %}">borrar</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_pagina' pagina.id %}">editar</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_imagen_pagina' pagina.id %}">cambiar imagen</a>
                     {% endif %}
+                    <!--{% if "user.username" == "pagina.autor" %}-->
+                    
+                    <!--{% endif %}-->
                     <br>
-                    <br>
+                    <br>                    
                     <h4 class="card-title" style="color: white;">{{pagina.titulo}}</h4>
                     <h5 class="card-title" style="color: white;">{{pagina.subtitulo}}</h5>
                     <p class="card-text"><small class="text-muted"> {{pagina.autor}} | {{pagina.fecha}}</small></p>

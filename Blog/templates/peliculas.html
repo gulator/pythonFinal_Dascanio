@@ -14,7 +14,7 @@
 </div>
 {% endif %}
 </div>
-
+<!--Boton alta Pelicula -->
 <div class="row">
   <div class="col" style="width: 20%;">
     <form action="/Blog/alta_pelicula">  
@@ -34,6 +34,7 @@
   </div>
   <div class="col" style="width: 65%;">
   </div>
+  <!--buscar-->
   <div class="col" style="width: 15%;">
     <form action="/Blog/buscar_pelicula">  
       <div class="container">
@@ -51,16 +52,12 @@
       </div>    
     </form>
   </div>
- 
-  <!--buscar-->
-  
 </div>
-<!--Alta-->
+
 
 
 <!--Listado peliculas disponibles-->
-<div class="container"> 
-  
+<div class="container">
   <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for n in peliculas %}
     <div class="col">
@@ -75,15 +72,13 @@
               <p class="card-text"><small class="text-muted">{{n.anio}}</small></p>
               <p class="card-text justificado">{{n.trama_breve}}</p>
               <a href="{% url 'pelicula_single' n.id %}" class="text-muted-it-grey small abajo" style="align-items: bottom;"">Leer mas...</a>
-                
             </div>
           </div>
         </div>
       </div>
     </div>
     {% endfor %} 
-  </div>    
-  
+  </div> 
 </div>
 
 

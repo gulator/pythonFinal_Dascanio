@@ -28,12 +28,10 @@
                         {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'paginas' %}">Paginas</a></li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'peliculas' %}">Peliculas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'mensajes' %}">Mensajes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'posteos' %}">Posteos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'peliculas' %}">Peliculas</a></li>                                                
                         {% endif %}
                         {% if user.is_staff == 1 %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'posteos' %}">Listados</a></li>
+                        <li class="nav-item"><a class="nav-link" href="">Listados</a></li>
                         {% endif %}
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">

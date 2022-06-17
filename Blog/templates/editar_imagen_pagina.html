@@ -2,26 +2,26 @@
 {% load static %}
 {% block bloque1 %}
 
+
+
 <div class="container">
     <div class="row">
         <div class="col" style="width: 30%;">
         </div>
         <div class="col" style="width: 40%;">
-            <form action="{% url 'editar_imagen_pelicula' imagen.id %}" method="POST" enctype="multipart/form-data" style="width:400px;">
+            <form action="{% url 'editar_imagen_pagina' imagen.id %}" method="POST" enctype="multipart/form-data" style="width:400px;">
                 {% csrf_token %}
                 
                 <div class="input-group mb-3">
                     <input type="file" class="form-control form-control-sm oscuro" name="imagen" >
                 </div>
-                <button class="btn btn-secondary" type="submit">Enviar</button>
+                <button class="btn btn-secondary" type="submit">Cambiar</button>
             </form>
         </div>
         <div class="col" style="width: 30%;">
         </div>
     </div>
 </div>
-
-
 
 
 

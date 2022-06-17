@@ -6,11 +6,11 @@
 
 <div class="container">
     <div style="margin: auto;width: 600px;align-content: center;">
-        <form action="/Blog/alta_pagina" method="POST" enctype="multipart/form-data">
+        <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
                 <div class="col" style="text-align: center;">
-                    <h3 style="color: rgb(236, 255, 168);">Crea un Post</h3>
+                    <h3 style="color: rgb(236, 255, 168);">Edita el Post</h3>
                         {% if texto%}
                         <div class="alert alert-danger" role="alert" style="text-align: center;">
                         {{texto}}
@@ -18,26 +18,22 @@
                         {% endif %}
                         <div class="input-group mb-3" style="margin: auto;">                    
                             <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;">Titulo</span>
-                            <input type="text" class="form-control form-control-sm oscuro" name="titulo" maxlength="80">
+                            <input type="text" class="form-control form-control-sm oscuro" name="titulo" maxlength="80" value="{{paginas.titulo}}">
                         </div>
                         <div class="input-group mb-3" style="margin: auto;">                    
                             <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;">Subtitulo</span>
-                            <input type="text" class="form-control form-control-sm oscuro" name="subtitulo" maxlength="80">
+                            <input type="text" class="form-control form-control-sm oscuro" name="subtitulo" maxlength="80" value="{{paginas.subtitulo}}">
                         </div>
                         <div class="input-group mb-3" style="margin: auto;">                    
                             <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;">Pelicula</span>
-                            <input type="text" class="form-control form-control-sm oscuro" name="pelicula" maxlength="70" placeholder="nombre de la pelicula relacionada con el Post">
+                            <input type="text" class="form-control form-control-sm oscuro" name="pelicula" maxlength="70" value="{{paginas.pelicula}}">
                         </div>
                         <div class="input-group mb-3">                    
                             <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;"">Texto</span>
-                            <textarea type="text" class="form-control" name="cuerpo"  rows="12" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;"></textarea>
+                            <textarea type="text" class="form-control" name="cuerpo"  rows="12" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;">{{paginas.cuerpo}}</textarea>
                             
                         </div>
                         
-                        <div class="text-muted-it-cream small" style="text-align: left;">Seleccioná una imagen para tu Post:</div>
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control form-control-sm oscuro" name="imagen">
-                        </div>
                         <div class="input-group mb-3">
                             <input type="hidden" class="form-control form-control-sm oscuro" value="{{usuario}}" name="autor">
                         </div>
@@ -51,7 +47,5 @@
         </form>
     </div>
 </div>
-
-
 
 {% endblock %}
