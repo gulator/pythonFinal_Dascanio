@@ -15,7 +15,7 @@
                     {% if user.is_staff == 1 %}    
                     <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_borrar' pelicula.id %}">borrar</a>
                     <a class="btn btn-secondary btn-sm" href="{% url 'editar_pelicula' pelicula.id %}">editar</a>
-                    <a class="btn btn-secondary btn-sm" href="{% url 'pelicula_editar_imagen' pelicula.id %}">cambiar imagen</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_imagen_pelicula' pelicula.id %}">cambiar imagen</a>
                     {% endif %}
                     <br>
                     <br>

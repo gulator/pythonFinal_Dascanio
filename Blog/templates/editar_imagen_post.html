@@ -3,7 +3,7 @@
 {% block bloque1 %}
 
 
-<form action="{% url 'editar_imagen' imagen.id %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'editar_imagen_post' imagen.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     
     <div>

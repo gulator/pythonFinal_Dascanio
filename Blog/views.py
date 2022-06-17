@@ -110,7 +110,7 @@ def pelicula_borrar(request, id):
     peliculas = Pelicula.objects.all()
     avatares = Avatar.objects.filter(user=request.user.id)
     if avatares:                                  
-        return render (request,'pelicula.html', {'peliculas':peliculas,'avatar':avatares[0].imagen.url})
+        return render (request,'peliculas.html', {'peliculas':peliculas,'avatar':avatares[0].imagen.url})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
     documento = {'peliculas':peliculas,'avatar':no_avatar}
@@ -142,8 +142,24 @@ def editar_pelicula(request, id):
     return render (request,'form_editar_pelicula.html',{'formulario':formulario,'pelicula':pelicula})
 
 @login_required
-def pelicula_editar_imagen(request, id):
-    pass
+def editar_imagen_pelicula(request, id):
+    imagen = Pelicula.objects.get(id=id)
+    if request.method == 'POST':
+        formulario = Editar_Imagen(request.POST, request.FILES)
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            imagen.imagen=datos['imagen']
+            imagen.save()
+            avatares = Avatar.objects.filter(user=request.user.id)
+            if avatares:                                  
+                return render (request,'pelicula.html', {'pelicula':imagen,'avatar':avatares[0].imagen.url})
+            else:
+                no_avatar = '/static/Blog/assets/img/noavatar.webp'
+            documento = {'pelicula':imagen,'avatar':no_avatar}
+
+            return render (request,'pelicula.html',documento)
+        
+    return render(request,'editar_imagen_pelicula.html',{'imagen':imagen})
 
 @login_required
 def mensajes (request):
@@ -158,15 +174,24 @@ def mensajes (request):
 
 
 def alta_pelicula (request):
+    avatares = Avatar.objects.filter(user=request.user.id)
+
     if request.method == 'POST':
         formulario = Pelicula_formulario(request.POST, request.FILES)
         
         if formulario.is_valid():
             datos = formulario.cleaned_data            
             pelicula = Pelicula(nombre = datos['nombre'],trama_breve = datos['trama_breve'],trama_larga = datos['trama_larga'],anio = datos['anio'],imagen = datos['imagen'])
-            pelicula.save()
-            texto = f"Pelicula cargada con éxito"
-            return render (request, 'alta_peliculas.html',{'texto':texto})
+            pelicula.save()            
+            peliculas = Pelicula.objects.all()
+
+            if avatares:                                  
+                return render (request,'peliculas.html', {'peliculas':peliculas,'avatar':avatares[0].imagen.url})
+            else:
+                no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+            documento = {'peliculas':peliculas,'avatar':no_avatar}
+
+            return render (request, 'peliculas.html',documento)
         else:
             texto = f"error en uno de los campos"
             return render (request,'alta_peliculas.html',{'texto':texto})
@@ -209,18 +234,24 @@ def alta_pagina (request):
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")        
     return render (request,'alta_paginas.html',{'fecha':fecha})
 
-def buscar_pelicula (request):
-    return render(request,'buscar_peliculas.html')   
 
-def busca_pelicula(request):
+
+def buscar_pelicula(request):
+    
     
         if request.GET['nombre']:
             nombre = request.GET['nombre']
             peliculas = Pelicula.objects.filter(nombre__icontains=nombre)
-            return render (request,'res_busc_peli.html', {'peliculas':peliculas})
+            if peliculas:
+                return render (request,'res_busc_peli.html', {'peliculas':peliculas})
+            else:
+                peliculas = Pelicula.objects.all()
+                texto2 = f'no se han encontrado peliculas con ese nombre'
+                return render (request,'peliculas.html', {"peliculas":peliculas,"texto2":texto2})   
         else:
-            texto = f'Ninguna pelicula encontrada en la base con ese nombre'
-            return render (request,'res_busc_peli.html', {"texto":texto})
+            peliculas = Pelicula.objects.all()
+            texto = f'Ingrese un texto en el campo de búsqueda'
+            return render (request,'peliculas.html', {"peliculas":peliculas,"texto":texto})
 
     #return render(request,'buscar_peliculas.html')    
 
@@ -264,7 +295,7 @@ def editar_post (request, id):
     return render (request,'form_editar_post.html', {'formulario':formulario,'paginas':paginas,'fecha':fecha})
 
 
-def editar_imagen (request, id):
+def editar_imagen_post (request, id):
     imagen = Posteo.objects.get(id=id)
 
     if request.method == 'POST':

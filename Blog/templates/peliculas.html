@@ -2,23 +2,61 @@
 {% load static %}
 {% block bloque1 %}
 
-<form action="">  <!--buscar_peli-->
-  <div class="container">
-    <div style="margin: auto;width: 400px;align-content: center;">
-      <div class="row">          
-        <div class="col">
-          <i style="color: red; text-align: right;font-size:medium"><!--{{respuesta}}--></i>
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="buscar" name="titulo">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" >buscar</i></button>
-          </div>
-        </div>  
-      </div>  
-    </div>
+<div>
+  {% if texto2%}
+<div class="alert alert-warning" role="alert" style="text-align: center;">
+  {{texto2}}
+</div>
+{% endif %}
+{% if texto%}
+<div class="alert alert-danger" role="alert" style="text-align: center;">
+  {{texto}}
+</div>
+{% endif %}
+</div>
 
-    </div>
-    
-</form>
+<div class="row">
+  <div class="col" style="width: 20%;">
+    <form action="/Blog/alta_pelicula">  
+      <div class="container">
+        <div align="left" style="margin: auto;width: 400px;align-content: center;">
+          <div class="row">          
+            <div class="col">
+              <i style="color: red; text-align: right;font-size:medium"><!--{{respuesta}}--></i>
+              <div class="input-group mb-3">
+                <input class="btn btn-success" type="submit" class="form-control" value="Nueva Pelicula">
+              </div>
+            </div>  
+          </div>  
+        </div>
+      </div>    
+    </form>
+  </div>
+  <div class="col" style="width: 65%;">
+  </div>
+  <div class="col" style="width: 15%;">
+    <form action="/Blog/buscar_pelicula">  
+      <div class="container">
+        <div style="margin-left: 38%;width: 250px;">
+          <div class="row">          
+            <div class="col">
+              <i style="color: red; text-align: right;font-size:medium"><!--{{respuesta}}--></i>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="buscar" name="nombre">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2" >buscar</i></button>
+              </div>
+            </div>  
+          </div>  
+        </div>
+      </div>    
+    </form>
+  </div>
+ 
+  <!--buscar-->
+  
+</div>
+<!--Alta-->
+
 
 <!--Listado peliculas disponibles-->
 <div class="container"> 

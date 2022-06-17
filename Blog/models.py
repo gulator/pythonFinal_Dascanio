@@ -24,7 +24,7 @@ class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
     imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
 
 class Pelicula (models.Model):
-    nombre = models.CharField(max_length=70)
+    nombre = models.CharField(max_length=100)
     trama_breve = models.CharField(max_length=250)
     trama_larga = models.TextField()
     anio = models.IntegerField()

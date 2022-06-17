@@ -2,29 +2,46 @@
 {% load static %}
 {% block bloque1 %}
 
-<form action="alta_pelicula" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        <label for="nombre" style="color: white;">Pelicula:</label>
-        <input type="text" name="nombre" placeholder="nombre pelicula" maxlength="10 ">
+<div class="container">
+    <div style="margin: auto;width: 600px;align-content: center;">
+        <form action="/Blog/alta_pelicula" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <h3 style="color: rgb(236, 255, 168);">Alta de Pelicula</h3>
+                        {% if texto%}
+                        <div class="alert alert-danger" role="alert" style="text-align: center;">
+                        {{texto}}
+                        </div>
+                        {% endif %}
+                        <div class="input-group mb-3" style="margin: auto;">                    
+                            <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;">Nombre</span>
+                            <input type="text" class="form-control form-control-sm oscuro" name="nombre" maxlength="100" placeholder="Nombre de la pelicula">
+                        </div>
+                        <div class="input-group mb-3">                    
+                            <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;"">resumen</span>
+                            <textarea type="text" class="form-control" name="trama_breve"  rows="4" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;" maxlength="250"></textarea>                            
+                        </div>
+                        <div class="input-group mb-3">                    
+                            <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;"">trama</span>
+                            <textarea type="text" class="form-control" name="trama_larga"  rows="12" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;"></textarea>
+                            
+                        </div>
+                        <div class="input-group mb-3">                    
+                            <span class="input-group-text mota" id="basic-addon1"style="width: 100px ;"">Año</span>
+                            <input type="number" class="form-control form-control-sm oscuro" name="anio" placeholder="Año de lanzamiento">
+                        </div>
+                        <div class="text-muted-it-cream small" style="text-align: left;">Seleccioná una imagen para la portada:</div>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control form-control-sm oscuro" name="imagen">
+                        </div>
+                        <button class="btn btn-secondary" type="submit"> Enviar</button>
+                </div>
+        
+            </div>
+        </form>
     </div>
-    <div>
-        <textarea type="text" name="trama_breve" placeholder="resumen" rows="4" cols="50" maxlength="250"></textarea>
-    </div>
-    <div>        
-        <textarea type="text" name="trama_larga" placeholder="trama de la pelicula" rows="10" cols="50"></textarea>
-    </div>
-    <div>
-        <label for="anio" style="color: white;">Año:</label>
-        <input type="number" name="anio" placeholder="año de lanzamiento">
-    </div>
-    <div>
-        <input type="file" name="imagen" placeholder="imagen de la portada" style="background-color: white;">
-    </div>
-    <div>
-        <input type="submit" value="enviar">
-    </div>
-</form>
+</div>
 
 
 

@@ -1,0 +1,17 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+
+<form action="{% url 'editar_imagen_pelicula' imagen.id %}" method="POST" enctype="multipart/form-data" style="width:400px;">
+    {% csrf_token %}
+    
+    <div class="input-group mb-3">
+        <input type="file" class="form-control form-control-sm oscuro" name="imagen" >
+    </div>
+    <button class="btn btn-secondary" type="submit">Enviar</button>
+</form>
+
+
+
+{% endblock %}

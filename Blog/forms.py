@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 
 class Pelicula_formulario(forms.Form):
-    nombre = forms.CharField(max_length=40)
+    nombre = forms.CharField(max_length=100)
     trama_breve = forms.CharField(max_length=250,widget=forms.Textarea)
     trama_larga = forms.CharField (widget=forms.Textarea)
     anio = forms.IntegerField()
