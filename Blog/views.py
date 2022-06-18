@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+import random
 
 
 
@@ -19,6 +20,9 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def inicio (request):    
     avatares = Avatar.objects.filter(user=request.user.id)
+    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg']
+    pelis = random.choice(archivos)
+    print(pelis)
 
     if avatares:                                  
         return render (request,'inicio.html', {'avatar':avatares[0].imagen.url})

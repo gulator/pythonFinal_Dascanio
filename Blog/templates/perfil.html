@@ -19,12 +19,14 @@
 <div class="container">
     <div class="bloque-perfil">
         <div class="row row-cols-1 row-cols-md-2 g-2">
-            <form action="" method="POST" style="width: 40%;">
+            <form action="/Cuentas/editar_avatar" method="POST" style="width: 40%;">
                 {% csrf_token %}
                 <div class="col" style="text-align: center;width: 100%;align-items: center;">
                     <br>
                     <img src="{{avatar}}" alt="Avatar" class="avatar-perfil"><br><br>
                     <button class="btn btn-secondary btn-sm" style="padding: 1%;">cambiar avatar</button>
+                    <p>{{prueba.id}}</p>
+                    
                 </div>
             </form>           
             <form action="/Cuentas/editar_usuario" method="POST" style="width: 60%;">
