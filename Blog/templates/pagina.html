@@ -24,7 +24,7 @@
                     <br>                    
                     <h4 class="card-title" style="color: white;">{{pagina.titulo}}</h4>
                     <h5 class="card-title" style="color: white;">{{pagina.subtitulo}}</h5>
-                    <p class="card-text"><small class="text-muted"> {{pagina.autor}} | {{pagina.fecha}}</small></p>
+                    <p class="card-text"><small class="text-muted"> {{pagina.autor}} | {{pagina.fecha}} {{pagina.editado}}</small></p>
                     <p class="card-text justificado-single"style="color: white;">Pelicula: {{pagina.pelicula}}</p>
                     <p class="card-text justificado-single"style="color: white;">{{pagina.cuerpo}}</p>
                                      
@@ -45,6 +45,8 @@
                     <div><input type="hidden" value="{{avatar.url}}" name="avatar"></div>
                     <div><input type="hidden" value="{{autor}}" name="autor"></div>
                     <div><input type="hidden" value="{{pagina.id}}" name="id_clase"></div>
+                    <div><input type="hidden" value="pagina" name="clase"></div>
+                    <div><input type="hidden" value="{{pagina.pelicula}}" name="pelicula"></div>
                     <br>
                     <input type="submit" value="enviar" class="btn btn-secondary btn-sm">
                     <br>

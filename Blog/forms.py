@@ -7,18 +7,18 @@ from django.contrib.auth.models import User
 
 
 class Pelicula_formulario(forms.Form):
-    nombre = forms.CharField(max_length=100)
+    nombre = forms.CharField(max_length=60)
     trama_breve = forms.CharField(max_length=250,widget=forms.Textarea)
     trama_larga = forms.CharField(widget=forms.Textarea)
     anio = forms.IntegerField()
     imagen = forms.ImageField()
 
+
 class Editar_Pelicula_Formulario(forms.Form):
-    nombre = forms.CharField(max_length=40)
+    nombre = forms.CharField(max_length=60)
     trama_breve = forms.CharField(max_length=250, widget=forms.Textarea)
     trama_larga = forms.CharField (widget=forms.Textarea)
     anio = forms.IntegerField()
-
 
 
 class Mensaje_formulario(forms.Form):
@@ -27,11 +27,20 @@ class Mensaje_formulario(forms.Form):
     avatar = forms.ImageField(required=False)
     comentario = forms.CharField(widget=forms.Textarea)
     id_clase = forms.IntegerField()
+    clase = forms.CharField(max_length=10)
+    pelicula = forms.CharField(max_length=60)
+
+
+class Editar_Mensaje_formulario(forms.Form):
+    comentario = forms.CharField(widget=forms.Textarea)
+    fecha = forms.DateTimeField()
+    editado = forms.CharField(max_length=10)
+
 
 class Pagina_formulario(forms.Form):
     titulo = forms.CharField(max_length=80)
     subtitulo = forms.CharField(max_length=80)
-    pelicula = forms.CharField(max_length=70)
+    pelicula = forms.CharField(max_length=60)
     cuerpo = forms.CharField (widget=forms.Textarea)    
     autor = forms.CharField(max_length=40)
     fecha = forms.DateTimeField()
@@ -40,10 +49,11 @@ class Pagina_formulario(forms.Form):
 class Editar_Pagina_formulario(forms.Form):
     titulo = forms.CharField(max_length=80)
     subtitulo = forms.CharField(max_length=80)
-    pelicula = forms.CharField(max_length=70)
+    pelicula = forms.CharField(max_length=60)
     cuerpo = forms.CharField (widget=forms.Textarea)    
     autor = forms.CharField(max_length=40)
     fecha = forms.DateTimeField()
+    editado = forms.CharField(max_length=10)
 
 class Editar_Imagen(forms.Form):    
     imagen = forms.ImageField()

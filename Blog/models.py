@@ -17,14 +17,15 @@ def ruta (request, filename):
 class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
     titulo = models.CharField(max_length=80)
     subtitulo = models.CharField(max_length=80)
-    pelicula = models.CharField(max_length=70)
+    pelicula = models.CharField(max_length=60)
     cuerpo = models.TextField()
     autor = models.CharField(max_length=40)
     fecha = models.DateTimeField()
+    editado = models.CharField(max_length=10)
     imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
 
 class Pelicula (models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=60)
     trama_breve = models.CharField(max_length=250)
     trama_larga = models.TextField()
     anio = models.IntegerField()
@@ -33,9 +34,12 @@ class Pelicula (models.Model):
 class Mensaje (models.Model):
     autor = models.CharField(max_length=60)
     fecha = models.DateTimeField()
+    editado = models.CharField(max_length=10)
     avatar = models.ImageField(upload_to = ruta, null=True, blank=True)
     comentario = models.TextField()
     id_clase = models.IntegerField()
+    clase = models.CharField(max_length=10)
+    pelicula = models.CharField(max_length=60)
 
 class Avatar (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -316,7 +316,8 @@ def editar_pagina (request, id):
             paginas.pelicula = datos['pelicula']
             paginas.cuerpo = datos['cuerpo']
             paginas.autor = datos['autor']
-            paginas.fecha = datos['fecha']            
+            paginas.fecha = datos['fecha']
+            paginas.editado = datos['editado']            
             paginas.save()
 
             paginas = Posteo.objects.all()           
@@ -360,15 +361,16 @@ def editar_imagen_pagina (request, id):
 
 def perfil (request, id):
 
+    datos = request.user
     avatares = Avatar.objects.filter(user=request.user.id)
     usuario = request.user.username
     posteos = Posteo.objects.filter(autor=request.user.username)
-    print (posteos)
+
     if avatares:                                  
-        return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos})
+        return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-    documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos}
+    documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos}
 
     return render (request, 'perfil.html',documento)
 
