@@ -35,7 +35,7 @@ class Mensaje (models.Model):
     autor = models.CharField(max_length=60)
     fecha = models.DateTimeField()
     editado = models.CharField(max_length=10)
-    avatar = models.ImageField(upload_to = ruta, null=True, blank=True)
+    avatar = models.ImageField(upload_to = ruta, null=True, blank=True)   
     comentario = models.TextField()
     id_clase = models.IntegerField()
     clase = models.CharField(max_length=10)

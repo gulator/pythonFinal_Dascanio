@@ -23,15 +23,13 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small">
-                        {% if user.is_authenticated %}
+                        
                         <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Home</a></li>
-                        {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'paginas' %}">Paginas</a></li>
-                        {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'peliculas' %}">Peliculas</a></li>                                                
-                        {% endif %}
+                        
                         {% if user.is_staff == 1 %}
-                        <li class="nav-item"><a class="nav-link" href="">Listados</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'panel' %}">Panel</a></li>
                         {% endif %}
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
@@ -39,8 +37,7 @@
                               {{user.username}}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{% url 'perfil' user.id %}">Perfil</a></li>                              
-                              <li><a class="dropdown-item" href="{% url 'editar_avatar' %}">Cambiar Avatar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'perfil' user.id %}">Perfil</a></li>
                               <li><a class="dropdown-item" href="{% url 'Logout' %}">Logout</a></li>                              
                             </ul>
                         </li>

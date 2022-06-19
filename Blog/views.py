@@ -20,16 +20,15 @@ import random
 @login_required
 def inicio (request):    
     avatares = Avatar.objects.filter(user=request.user.id)
-    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg']
-    pelis = random.choice(archivos)
-    print(pelis)
+    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
+    portada = random.choice(archivos)    
 
     if avatares:                                  
-        return render (request,'inicio.html', {'avatar':avatares[0].imagen.url})
+        return render (request,'inicio.html', {'avatar':avatares[0].imagen.url,'portada':portada})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
 
-    documento = {'avatar':no_avatar}
+    documento = {'avatar':no_avatar,'portada':portada}
     return render (request,'inicio.html',documento)
 
 
@@ -94,6 +93,7 @@ def pelicula_single(request, id):
 
     if request.method == 'POST':
         formulario = Mensaje_formulario(request.POST, request.FILES)
+        print(formulario)
 
         if formulario.is_valid():
             datos = formulario.cleaned_data
@@ -232,7 +232,9 @@ def alta_mensaje (request):
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
 
-    if avatares:                                  
+    if avatares:     
+
+        #return render (request,'alta_mensajes.html',{'fecha':fecha,'avatar':avatares[0].imagen})                             
         return render (request,'alta_mensajes.html',{'fecha':fecha,'avatar':avatares[0].imagen.url})
     else:
         no_avatar = '/static/Blog/assets/img/noavatar.webp'
@@ -377,6 +379,16 @@ def perfil (request, id):
     documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos}
 
     return render (request, 'perfil.html',documento)
+
+def panel (request):
+    peliculas = Pelicula.objects.all()
+    paginas = Posteo.objects.all()
+    mensajes = Mensaje.objects.all()
+
+    datos = {'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes}
+
+
+    return render (request,'panel.html',datos)
 
 
 

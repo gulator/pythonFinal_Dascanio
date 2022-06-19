@@ -89,6 +89,25 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.showcase .showcase-text {
+  padding: 3rem;
+  color: #b6d4fe;
+}
+.showcase .showcase-img {
+  min-height: 30rem;
+  background-size: cover;
+  
+}
+@media (min-width: 768px) {
+  .showcase .showcase-text {
+    padding: 7rem;
+  }
+}
+
+.texto-inicio{
+  color: #b6d4fe;
+}
+
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -3198,6 +3217,38 @@ textarea.form-control-lg {
   background-color: #0dcaf0;
   border-color: #0dcaf0;
 }
+
+
+.btn-inicio {
+  color: #000;
+  background-color: #b6d4fe;
+  border-color: #b6d4fe;
+}
+.btn-inicio:hover {
+  color: #000;
+  background-color: #31d2f2;
+  border-color: #25cff2;
+}
+.btn-check:focus + .btn-inicio, .btn-inicio:focus {
+  color: #000;
+  background-color: #31d2f2;
+  border-color: #25cff2;
+  box-shadow: 0 0 0 0.25rem rgba(11, 172, 204, 0.5);
+}
+.btn-check:checked + .btn-inicio, .btn-check:active + .btn-inicio, .btn-inicio:active, .btn-inicio.active, .show > .btn-inicio.dropdown-toggle {
+  color: #000;
+  background-color: #3dd5f3;
+  border-color: #25cff2;
+}
+.btn-check:checked + .btn-inicio:focus, .btn-check:active + .btn-inicio:focus, .btn-inicio:active:focus, .btn-inicio.active:focus, .show > .btn-inicio.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(11, 172, 204, 0.5);
+}
+.btn-inicio:disabled, .btn-inicio.disabled {
+  color: #000;
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+}
+
 
 .btn-warning {
   color: #000;
@@ -11400,6 +11451,38 @@ header.masthead h1, header.masthead .h1 {
     font-size: 3rem;
   }
 }
+
+header.inicio-bg {
+  position: relative;
+  background-color: #343a40;
+  background: url("../assets/img/image5.jpg") no-repeat center center;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+header.inicio-bg:before {
+  content: "";
+  position: absolute;
+  background-color: #080e1a;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+header.inicio-bg h1, header.inicio-bg .h1 {
+  font-size: 2rem;
+}
+@media (min-width: 768px) {
+  header.inicio-bg {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+  }
+  header.inicio-bg h1, header.inicio-bg .h1 {
+    font-size: 3rem;
+  }
+}
+
 
 .errorlist::marker {
   color: 33, 37, 41;

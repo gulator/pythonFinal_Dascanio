@@ -22,6 +22,7 @@ path('buscar_pagina', views.buscar_pagina, name="buscar_pagina"),
 path('eliminar_pagina/<int:id>', views.eliminar_pagina, name="eliminar_pagina"),
 path('editar_pagina/<int:id>', views.editar_pagina, name='editar_pagina'),
 path('editar_imagen_pagina/<int:id>', views.editar_imagen_pagina, name='editar_imagen_pagina'),
+path('panel',views.panel, name="panel")
 #path('editar_usuario', views.editar_usuario, name='editar_usuario'),
 #path('editar_avatar', views.editar_avatar, name='editar_avatar'),
 #path('login', views.login_request, name="Login"),

@@ -1,0 +1,102 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<!--tabla peliculas-->
+{% if peliculas %}
+<h5 style="color: rgb(236, 255, 168);text-align: center;">Peliculas</h5>
+<table class="table table-dark table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Pelicula</th>
+        <th scope="col">Resumen</th>
+        <th scope="col">Portada</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for p in peliculas %}
+      <tr>
+        <th scope="row">{{p.id}}</th>
+        <td><a href="{% url 'pelicula_single' p.id %}">{{p.nombre}}</a></td>
+        <td>{{p.trama_breve}}</td>
+        <td><img src="{{p.imagen.url}}" style="height: 50px ;"></td>        
+        <td><a href="{% url 'pelicula_borrar' p.id %}">borrar</a></td>
+        <td><a href="{% url 'editar_pelicula' p.id %}">editar</a></td>
+        <td><a href="{% url 'editar_imagen_pelicula' p.id %}">imagen</a></td>
+      </tr>
+        {% endfor %}     
+    </tbody>
+</table>
+{% else %}
+    <div class="alert alert-info" role="alert" style="text-align: center;">
+        Aun no hay peliculas registradas
+    </div>
+{% endif %}
+<!--tabla posts-->
+{% if paginas %}
+<h5 style="color: rgb(236, 255, 168);text-align: center;">Paginas</h5>
+<table class="table table-dark table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Titulo</th>
+        <th scope="col">Subtitulo</th>
+        <th scope="col">Pelicula</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Imagen</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for n in paginas %}
+      <tr>
+        <th scope="row">{{n.id}}</th>
+        <td><a href="{% url 'pagina_single' n.id %}">{{n.titulo}}</a></td>
+        <td>{{n.subtitulo}}</td>
+        <td>{{n.pelicula}}</td>
+        <td>{{n.autor}}</td>
+        <td><img src="{{n.imagen.url}}" style="height: 50px ;"></td>
+        <td><a href="">ver</a></td>
+        <td><a href="">borrar</a></td>
+        <td><a href="">editar</a></td>
+        <td><a href="">imagen</a></td>
+      </tr>
+      {% endfor %}      
+    </tbody>
+</table>
+{% else %}
+    <div class="alert alert-info" role="alert" style="text-align: center;">
+        Aun no hay Paginas registradas
+    </div>
+{% endif %}
+
+<!--tabla mensajes-->
+<h5 style="color: rgb(236, 255, 168);text-align: center;">Comentarios</h5>
+<table class="table table-dark table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Comentario</th>
+        <th scope="col">Pelicula</th>
+        <th scope="col">categoria</th>
+        <th scope="col">ID-Categoria</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>Mark</td>
+        <td>Mark</td>
+        <td><a href="">borrar</a></td>
+        <td><a href="">editar</a></td>
+        <td><a href="">imagen</a></td>
+      </tr>      
+    </tbody>
+  </table>
+
+{% endblock %}
