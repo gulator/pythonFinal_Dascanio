@@ -24,6 +24,9 @@ class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
     editado = models.CharField(max_length=10)
     imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
 
+    def __str__(self):
+        return f'Titulo: {self.titulo} | Subtitulo: {self.subtitulo}'
+
 class Pelicula (models.Model):
     nombre = models.CharField(max_length=60)
     trama_breve = models.CharField(max_length=250)
@@ -31,18 +34,26 @@ class Pelicula (models.Model):
     anio = models.IntegerField()
     imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
 
+    def __str__(self):
+        return f'Pelicula: {self.nombre}'
+
 class Mensaje (models.Model):
     autor = models.CharField(max_length=60)
     fecha = models.DateTimeField()
-    editado = models.CharField(max_length=10)
-    avatar = models.ImageField(upload_to = ruta, null=True, blank=True)   
+    editado = models.CharField(max_length=10)       
     comentario = models.TextField()
     id_clase = models.IntegerField()
     clase = models.CharField(max_length=10)
     pelicula = models.CharField(max_length=60)
 
+    def __str__(self):
+        return f'Comentario de {self.autor} en {self.clase} referida a pelicula: {self.pelicula}'
+
 class Avatar (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='avatares', null=True, blank=True)
+
+    def __str__(self):
+        return f'Avatar usuario: {self.user}'
 
 

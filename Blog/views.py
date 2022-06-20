@@ -97,7 +97,7 @@ def pelicula_single(request, id):
 
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'],id_clase=datos['id_clase'])
+            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],comentario = datos['comentario'],id_clase=datos['id_clase'],pelicula = datos['pelicula'],clase = datos['clase'],)
             mensaje.save()
         else:
             print ("formulario invalido!")    
@@ -211,35 +211,73 @@ def alta_pelicula (request):
     return render (request,'alta_peliculas.html')
 
 
-def alta_mensaje (request):
+def eliminar_mensaje (request,id):
     avatares = Avatar.objects.filter(user=request.user.id)
+    mensaje = Mensaje.objects.get(id=id)
+    mensaje.delete()
+
+    peliculas = Pelicula.objects.all()
+    paginas = Posteo.objects.all()
+    mensajes = Mensaje.objects.all()
+
+    if avatares:                                  
+        return render (request,'panel.html', {'avatar':avatares[0].imagen.url,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
+    else:
+        no_avatar = '/static/Blog/assets/img/noavatar.webp'
+        return render (request, 'panel.html', {'avatar':no_avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
+
+
+def editar_mensaje (request,id):
+    avatares = Avatar.objects.filter(user=request.user.id)
+    comentario = Mensaje.objects.get(id=id)
 
     if request.method == 'POST':
-        formulario = Mensaje_formulario(request.POST,request.FILES)
+        formulario = Editar_Mensaje_formulario(request.POST)
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'],id_clase=datos['id_clase'])
-            mensaje.save()
+            print (datos)
+            comentario.fecha = datos['fecha']
+            comentario.editado = datos['editado']
+            comentario.comentario = datos['comentario']
+            comentario.save()
+
+            peliculas = Pelicula.objects.all()
+            paginas = Posteo.objects.all()
+            mensajes = Mensaje.objects.all()
 
             if avatares:                                  
-                return render (request,'alta_mensajes.html', {'avatar':avatares[0].imagen.url})
+                return render (request,'panel.html', {'avatar':avatares[0].imagen.url,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
             else:
-                no_avatar = '/static/Blog/assets/img/noavatar.webp'           
+                no_avatar = '/static/Blog/assets/img/noavatar.webp'
+                return render (request, 'panel.html', {'avatar':no_avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})           
             #pelicula_single(1)
         else:
             texto = f'error en uno de los campos'
-            return render(request,'alta_mensajes.html',{'texto':texto})
+            return render(request,'inicio.html',{'texto':texto})
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
 
-    if avatares:     
-
-        #return render (request,'alta_mensajes.html',{'fecha':fecha,'avatar':avatares[0].imagen})                             
-        return render (request,'alta_mensajes.html',{'fecha':fecha,'avatar':avatares[0].imagen.url})
+    if avatares:                       
+        return render (request,'form_editar_mensaje.html',{'fecha':fecha,'avatar':avatares[0].imagen.url,'comentario':comentario})
     else:
         no_avatar = '/static/Blog/assets/img/noavatar.webp'
 
-    return render (request,'alta_mensajes.html',{'fecha':fecha,'avatar':no_avatar})
+    return render (request,'form_editar_mensaje.html',{'fecha':fecha,'avatar':no_avatar,'comentario':comentario})
+
+def buscar_mensajes (request):
+    avatares = Avatar.objects.filter(user=request.user.id)
+    pelicula = Pelicula.objects.all()
+    pagina = Posteo.objects.all()
+
+    if request.method == 'GET':
+        autor = request.GET['autor']
+        mensajes = Mensaje.objects.filter(autor__icontains=autor)
+
+        if avatares:                       
+            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':avatares[0].imagen.url,'pagina':pagina,'pelicula':pelicula,'autor':autor})
+        else:
+            no_avatar = '/static/Blog/assets/img/noavatar.webp'
+            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':no_avatar,'pagina':pagina,'pelicula':pelicula})
 
 
 @login_required

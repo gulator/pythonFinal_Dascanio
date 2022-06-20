@@ -23,8 +23,7 @@ class Editar_Pelicula_Formulario(forms.Form):
 
 class Mensaje_formulario(forms.Form):
     autor = forms.CharField(max_length=60)
-    fecha = forms.DateTimeField()
-    avatar = forms.ImageField(required=False)
+    fecha = forms.DateTimeField()    
     comentario = forms.CharField(widget=forms.Textarea)
     id_clase = forms.IntegerField()
     clase = forms.CharField(max_length=10)
@@ -32,8 +31,9 @@ class Mensaje_formulario(forms.Form):
 
 
 class Editar_Mensaje_formulario(forms.Form):
-    comentario = forms.CharField(widget=forms.Textarea)
-    fecha = forms.DateTimeField()
+    
+    fecha = forms.DateTimeField()    
+    comentario = forms.CharField(widget=forms.Textarea)    
     editado = forms.CharField(max_length=10)
 
 

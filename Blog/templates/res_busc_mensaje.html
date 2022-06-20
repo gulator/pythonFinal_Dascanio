@@ -1,0 +1,32 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+
+{% block bloque1 %}
+{% if mensajes %}
+<h3 style="color: rgb(236, 255, 168);">Comentarios hechos por "{{autor}}"</h3>
+
+{% for n in mensajes %}
+<div class="card">
+    <div class="card-header bg-oscuro-light">
+        <strong>{{n.pelicula}} ({{n.clase}})</strong>
+    </div>
+    <div class="card-body bg-oscuro">      
+      <cite class="card-text">{{n.comentario}}</cite>
+      {% if n.clase == "pelicula" %}      
+      <a href="{% url 'pelicula_single' n.id_clase %}">ver</a>
+      {% else %}
+      <a href="{% url 'pagina_single' n.id_clase %}">ver</a>   
+      {% endif %}
+    </div>
+</div>
+
+<hr class="linea">
+
+{% endfor %}
+
+{% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+
+{% block bloque1 %}
+
+
+
+<div class="container">
+    <div style="margin: auto;width: 600px;align-content: center;">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <h3 style="color: rgb(236, 255, 168);">Editar comentario</h3>
+                    <div class="input-group mb-3">                    
+                        <span class="input-group-text mota" id="basic-addon1">Comentario</span>
+                        <textarea type="text" class="form-control" name="comentario"  rows="12" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;">{{comentario.comentario}}</textarea>
+                    </div>
+                    <div class="input-group mb-3">                    
+                        <input type="hidden" value="{{fecha}}" name="fecha">
+                        <input type="hidden" value="editado" name="editado">
+                    </div>
+                    <button class="btn btn-secondary" type="submit"> Enviar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

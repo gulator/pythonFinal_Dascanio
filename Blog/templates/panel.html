@@ -56,11 +56,10 @@
         <td>{{n.subtitulo}}</td>
         <td>{{n.pelicula}}</td>
         <td>{{n.autor}}</td>
-        <td><img src="{{n.imagen.url}}" style="height: 50px ;"></td>
-        <td><a href="">ver</a></td>
-        <td><a href="">borrar</a></td>
-        <td><a href="">editar</a></td>
-        <td><a href="">imagen</a></td>
+        <td><img src="{{n.imagen.url}}" style="height: 50px ;"></td>        
+        <td><a href="{% url 'eliminar_pagina' n.id %}">borrar</a></td>
+        <td><a href="{% url 'editar_pagina' n.id %}">editar</a></td>
+        <td><a href="{% url 'editar_imagen_pagina' n.id %}">imagen</a></td>
       </tr>
       {% endfor %}      
     </tbody>
@@ -72,8 +71,9 @@
 {% endif %}
 
 <!--tabla mensajes-->
+{% if paginas %}
 <h5 style="color: rgb(236, 255, 168);text-align: center;">Comentarios</h5>
-<table class="table table-dark table-striped table-hover">
+  <table class="table table-dark table-striped table-hover">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -85,18 +85,24 @@
       </tr>
     </thead>
     <tbody>
+      {% for m in mensajes %}
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>Mark</td>
-        <td>Mark</td>
-        <td><a href="">borrar</a></td>
-        <td><a href="">editar</a></td>
-        <td><a href="">imagen</a></td>
-      </tr>      
+        <th scope="row">{{m.id}}</th>
+        <td>{{m.autor}}</td>
+        <td>{{m.comentario}}</td>
+        <td>{{m.pelicula}}</td>
+        <td>{{m.clase}}</td>
+        <td>{{m.id_clase}}</td>
+        <td><a href="{% url 'eliminar_mensaje' m.id%}">borrar</a></td>
+        <td><a href="{% url 'editar_mensaje' m.id %}">editar</a></td>
+      </tr>
+      {% endfor %}      
     </tbody>
   </table>
+{% else %}
+    <div class="alert alert-info" role="alert" style="text-align: center;">
+        Aun no hay mensajes registrados
+    </div>
+{% endif %}
 
 {% endblock %}
