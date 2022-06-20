@@ -71,7 +71,7 @@ def register (request):
 def logout_usuario (request):
     logout(request)
 
-    return redirect ('Login')
+    return redirect ('inicio')
 
 @login_required
 def editar_usuario (request):

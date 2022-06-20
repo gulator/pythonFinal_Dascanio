@@ -71,7 +71,7 @@
 {% endif %}
 
 <!--tabla mensajes-->
-{% if paginas %}
+{% if mensajes %}
 <h5 style="color: rgb(236, 255, 168);text-align: center;">Comentarios</h5>
   <table class="table table-dark table-striped table-hover">
     <thead>
@@ -93,8 +93,7 @@
         <td>{{m.pelicula}}</td>
         <td>{{m.clase}}</td>
         <td>{{m.id_clase}}</td>
-        <td><a href="{% url 'eliminar_mensaje' m.id%}">borrar</a></td>
-        <td><a href="{% url 'editar_mensaje' m.id %}">editar</a></td>
+        <td><a href="{% url 'eliminar_mensaje' m.id%}">borrar</a></td>        
       </tr>
       {% endfor %}      
     </tbody>

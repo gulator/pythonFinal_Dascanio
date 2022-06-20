@@ -2,6 +2,20 @@
 {% load static %}
 
 {% block bloque1 %}
+
+<div>
+    {% if texto2%}
+  <div class="alert alert-warning" role="alert" style="text-align: center;">
+    {{texto2}}
+  </div>
+  {% endif %}
+  {% if texto%}
+  <div class="alert alert-danger" role="alert" style="text-align: center;">
+    {{texto}}
+  </div>
+  {% endif %}
+</div>
+
 {% if mensajes %}
 <h3 style="color: rgb(236, 255, 168);">Comentarios hechos por "{{autor}}"</h3>
 
@@ -11,7 +25,7 @@
         <strong>{{n.pelicula}} ({{n.clase}})</strong>
     </div>
     <div class="card-body bg-oscuro">      
-      <cite class="card-text">{{n.comentario}}</cite>
+      "<cite class="card-text">{{n.comentario}}</cite></quote>"
       {% if n.clase == "pelicula" %}      
       <a href="{% url 'pelicula_single' n.id_clase %}">ver</a>
       {% else %}
@@ -23,10 +37,5 @@
 <hr class="linea">
 
 {% endfor %}
-
 {% endif %}
-
-
-
-
 {% endblock %}

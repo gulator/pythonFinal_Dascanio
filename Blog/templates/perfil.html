@@ -99,7 +99,49 @@
                   </div>
             {% endif %}      
         </div>
-        
     </div>
+
+<!--Mensajes-->    
+<!--tabla mensajes-->
+<div class="row">
+    <div class="col">
+        <h5 style="color: rgb(236, 255, 168);text-align: center;">Comentarios</h5>
+        {% if mensajes %}
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Comentario</th>
+                <th scope="col">Pelicula</th>
+                <th scope="col">categoria</th>                
+            </tr>
+            </thead>
+            <tbody>
+            {% for m in mensajes %}
+            <tr>
+                <th scope="row">{{m.id}}</th>
+                <td>{{m.autor}}</td>
+                <td>{{m.comentario}}</td>
+                <td>{{m.pelicula}}</td>
+                <td>{{m.clase}}</td>
+                {% if m.clase == "pelicula" %}      
+                <td><a href="{% url 'pelicula_single' m.id_clase %}">ver</a></td>
+                {% else %}
+                <td><a href="{% url 'pagina_single' m.id_clase %}">ver</a></td>   
+                {% endif %}                
+                <td><a href="{% url 'eliminar_mensaje' m.id %}">borrar</a></td>
+                <td><a href="{% url 'editar_mensaje' m.id %}">editar</a></td>
+            </tr>
+            {% endfor %}      
+            </tbody>
+        </table>
+        {% else %}
+            <div class="alert alert-info" role="alert" style="text-align: center;">
+                Aun no hay mensajes registrados
+            </div>
+        {% endif %}
+    </div>
+</div>    
 
 {% endblock %}

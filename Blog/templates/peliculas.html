@@ -15,6 +15,7 @@
 {% endif %}
 </div>
 <!--Boton alta Pelicula -->
+
 <div class="row">
   <div class="col" style="width: 20%;">
     <form action="/Blog/alta_pelicula">  
@@ -24,7 +25,9 @@
             <div class="col">
               <i style="color: red; text-align: right;font-size:medium"><!--{{respuesta}}--></i>
               <div class="input-group mb-3">
+                {% if user.is_staff == 1 %}
                 <input class="btn btn-success" type="submit" class="form-control" value="Nueva Pelicula">
+                {% endif %}
               </div>
             </div>  
           </div>  

@@ -30,6 +30,7 @@
                         {% if user.is_staff == 1 %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'panel' %}">Panel</a></li>
                         {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'acerca' %}">Acerca de mi</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'Logout' %}">Logout</a></li>
                         {% else %}
@@ -56,7 +57,7 @@
         
 
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; JD Movie Blog 2022</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

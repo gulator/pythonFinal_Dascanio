@@ -251,6 +251,10 @@ xsmall, .xsmall {
   font-size: 11px;
 }
 
+tinny, .tinny {
+  font-size: 0.675em;
+}
+
 
 mark, .mark {
   padding: 0.2em;
@@ -11580,3 +11584,4 @@ header.inicio-bg h1, header.inicio-bg .h1 {
   padding: 1%;
   height: 400px;
 }
+

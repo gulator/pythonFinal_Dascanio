@@ -17,7 +17,7 @@ import random
 
 # Create your views here.
 
-@login_required
+
 def inicio (request):    
     avatares = Avatar.objects.filter(user=request.user.id)
     archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
@@ -44,6 +44,8 @@ def paginas (request):
     documento = {'paginas':paginas,'avatar':no_avatar}
     return render (request,'paginas.html',documento)
 
+
+@login_required
 def pagina_single(request, id):   
 
     pagina = Posteo.objects.get(id=id)
@@ -82,7 +84,7 @@ def peliculas (request):
     documento = {'peliculas':peliculas,'avatar':no_avatar}
     return render (request,'peliculas.html',documento)
 
-
+@login_required
 def pelicula_single(request, id):   
 
     pelicula = Pelicula.objects.get(id=id)
@@ -184,7 +186,7 @@ def editar_imagen_pelicula(request, id):
     return render(request,'editar_imagen_pelicula.html',{'imagen':imagen,'avatar':no_avatar})
 
 
-
+@login_required
 def alta_pelicula (request):
     avatares = Avatar.objects.filter(user=request.user.id)
 
@@ -210,7 +212,7 @@ def alta_pelicula (request):
     
     return render (request,'alta_peliculas.html')
 
-
+@login_required
 def eliminar_mensaje (request,id):
     avatares = Avatar.objects.filter(user=request.user.id)
     mensaje = Mensaje.objects.get(id=id)
@@ -226,7 +228,7 @@ def eliminar_mensaje (request,id):
         no_avatar = '/static/Blog/assets/img/noavatar.webp'
         return render (request, 'panel.html', {'avatar':no_avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
 
-
+@login_required
 def editar_mensaje (request,id):
     avatares = Avatar.objects.filter(user=request.user.id)
     comentario = Mensaje.objects.get(id=id)
@@ -250,7 +252,7 @@ def editar_mensaje (request,id):
             else:
                 no_avatar = '/static/Blog/assets/img/noavatar.webp'
                 return render (request, 'panel.html', {'avatar':no_avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})           
-            #pelicula_single(1)
+            
         else:
             texto = f'error en uno de los campos'
             return render(request,'inicio.html',{'texto':texto})
@@ -268,16 +270,35 @@ def buscar_mensajes (request):
     avatares = Avatar.objects.filter(user=request.user.id)
     pelicula = Pelicula.objects.all()
     pagina = Posteo.objects.all()
+    texto = f'Ingrese un texto en el campo de búsqueda"'
 
-    if request.method == 'GET':
+    if request.GET['autor']:
         autor = request.GET['autor']
         mensajes = Mensaje.objects.filter(autor__icontains=autor)
+        texto2 = f'no se han encontrado comentarios hechos por "{autor}"'
 
+        if mensajes:
+            
+            if avatares:                       
+                return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':avatares[0].imagen.url,'pagina':pagina,'pelicula':pelicula,'autor':autor})
+            else:
+                no_avatar = '/static/Blog/assets/img/noavatar.webp'
+                return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':no_avatar,'pagina':pagina,'pelicula':pelicula,})
+        else:
+            
+            if avatares:                       
+                return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':avatares[0].imagen.url,'pagina':pagina,'pelicula':pelicula,'autor':autor,'texto2':texto2})
+            else:
+                no_avatar = '/static/Blog/assets/img/noavatar.webp'
+                return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':no_avatar,'pagina':pagina,'pelicula':pelicula,'texto2':texto2})
+
+    else:
         if avatares:                       
-            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':avatares[0].imagen.url,'pagina':pagina,'pelicula':pelicula,'autor':autor})
+            return render (request,'res_busc_mensaje.html',{'avatar':avatares[0].imagen.url,'pagina':pagina,'pelicula':pelicula,'texto':texto})
         else:
             no_avatar = '/static/Blog/assets/img/noavatar.webp'
-            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':no_avatar,'pagina':pagina,'pelicula':pelicula})
+            return render (request,'res_busc_mensaje.html',{'avatar':no_avatar,'pagina':pagina,'pelicula':pelicula,'texto':texto})
+
 
 
 @login_required
@@ -338,7 +359,7 @@ def buscar_pagina (request):
         texto = f'Ingrese un texto en el campo de búsqueda'
         return render (request,'paginas.html', {"paginas":paginas,"texto":texto})
 
-
+@login_required
 def eliminar_pagina(request, id):
         pagina = Posteo.objects.get(id=id)
         pagina.delete()
@@ -376,7 +397,7 @@ def editar_pagina (request, id):
     usuario = request.user.username
     return render (request,'form_editar_pagina.html', {'paginas':paginas,'fecha':fecha, 'usuario':usuario})
 
-
+@login_required
 def editar_imagen_pagina (request, id):
     imagen = Posteo.objects.get(id=id)
 
@@ -402,22 +423,24 @@ def editar_imagen_pagina (request, id):
 
     return render (request,'editar_imagen_pagina.html', {'formulario':formulario,'imagen':imagen})
 
-
+@login_required
 def perfil (request, id):
 
     datos = request.user
     avatares = Avatar.objects.filter(user=request.user.id)
     usuario = request.user.username
     posteos = Posteo.objects.filter(autor=request.user.username)
+    mensajes = Mensaje.objects.filter(autor=request.user.username)
 
     if avatares:                                  
-        return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos})
+        return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos,'mensajes':mensajes})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-    documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos}
+    documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos,'mensajes':mensajes}
 
     return render (request, 'perfil.html',documento)
 
+@login_required
 def panel (request):
     peliculas = Pelicula.objects.all()
     paginas = Posteo.objects.all()
@@ -428,6 +451,7 @@ def panel (request):
 
     return render (request,'panel.html',datos)
 
-
+def acerca(request):
+    return render (request, 'acerca.html')
 
 
