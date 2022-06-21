@@ -11585,3 +11585,12 @@ header.inicio-bg h1, header.inicio-bg .h1 {
   height: 400px;
 }
 
+.texto-error {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  right: 50%;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: grey 50%;
+}
+

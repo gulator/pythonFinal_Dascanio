@@ -1,4 +1,5 @@
 from time import strftime
+from urllib import request
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
@@ -17,27 +18,32 @@ import random
 
 # Create your views here.
 
+def imagenAvatar(a,**kwargs):
+    avatares = a
+    if avatares:                                  
+        return (avatares[0].imagen.url)
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+        return (no_avatar)
+
 
 def inicio (request):    
     avatares = Avatar.objects.filter(user=request.user.id)
     archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
     portada = random.choice(archivos)    
 
-    if avatares:                                  
-        return render (request,'inicio.html', {'avatar':avatares[0].imagen.url,'portada':portada})
-    else:
-        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-
-    documento = {'avatar':no_avatar,'portada':portada}
-    return render (request,'inicio.html',documento)
+    avatar = imagenAvatar(avatares)
+    return render (request,'inicio.html', {'avatar':avatar,'portada':portada})
+    
 
 
 def paginas (request):
     paginas = Posteo.objects.all()       
     avatares = Avatar.objects.filter(user=request.user.id)
     
+    avatar = imagenAvatar(avatares)
     if avatares:                                  
-        return render (request,'paginas.html', {'avatar':avatares[0].imagen.url,'paginas':paginas})
+        return render (request,'paginas.html', {'avatar':avatar,'paginas':paginas})
     else:
         no_avatar =   '/static/Blog/assets/img/noavatar.webp'
 
@@ -145,7 +151,12 @@ def editar_pelicula(request, id):
 
             pelicula = Pelicula.objects.get(id=id)
 
-            return render(request, 'pelicula.html', {'pelicula':pelicula})
+            if avatares:                                  
+                return render (request,'pelicula.html', {'avatar':avatares[0].imagen.url,'pelicula':pelicula})
+            else:
+                no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+
+            return render(request, 'pelicula.html', {'pelicula':pelicula,'avatar':no_avatar})
 
     else: 
                 
@@ -210,7 +221,11 @@ def alta_pelicula (request):
             texto = f"error en uno de los campos"
             return render (request,'alta_peliculas.html',{'texto':texto})
     
-    return render (request,'alta_peliculas.html')
+    if avatares:                                  
+        return render (request,'alta_peliculas.html',{'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+        return render (request,'alta_peliculas.html',{'avatar':no_avatar})
 
 @login_required
 def eliminar_mensaje (request,id):
@@ -303,6 +318,7 @@ def buscar_mensajes (request):
 
 @login_required
 def alta_pagina (request):    
+    avatares = Avatar.objects.filter(user=request.user.id)
 
     if request.method == 'POST':
         formulario = Pagina_formulario(request.POST,request.FILES)
@@ -312,29 +328,56 @@ def alta_pagina (request):
             pagina = Posteo(titulo = datos['titulo'],subtitulo = datos['subtitulo'],pelicula = datos['pelicula'],cuerpo = datos['cuerpo'],autor = datos['autor'],fecha = datos['fecha'],imagen = datos['imagen'],)
             pagina.save()
             texto = f'Post creado con exito'
-            return render(request,'paginas.html',{'texto':texto})
+
+            if avatares:
+                return render(request,'paginas.html',{'texto':texto,'avatar':avatares[0].imagen.url})
+            else:
+                no_avatar = '/static/Blog/assets/img/noavatar.webp'
+                return render(request,'paginas.html',{'texto':texto,'avatar':no_avatar})
+            
         else:
-            texto = f'error en uno de los campos'
-            return render(request,'alta_paginas.html',{'texto':texto})
+            if avatares:
+                return render (request,'alta_paginas.html',{'texto':texto,'avatar':avatares[0].imagen.url})
+            else:
+                texto = f'error en uno de los campos'
+                no_avatar = '/static/Blog/assets/img/noavatar.webp'                
+                return render(request,'alta_paginas.html',{'texto':texto,'avatar':no_avatar})
+           
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    usuario = request.user.username 
+    usuario = request.user.username
+
+    if avatares:                                  
+        return render (request,'alta_paginas.html',{'avatar':avatares[0].imagen.url,'fecha':fecha,'usuario':usuario})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+        return render (request,'alta_paginas.html',{'avatar':no_avatar,'fecha':fecha,'usuario':usuario})
             
-    return render (request,'alta_paginas.html',{'fecha':fecha,'usuario':usuario})
+    
 
 
 
 def buscar_pelicula(request):    
-    
+        avatares = Avatar.objects.filter(user=request.user.id)
+
         if request.GET['nombre']:
             nombre = request.GET['nombre']
             peliculas = Pelicula.objects.filter(nombre__icontains=nombre)
-            if peliculas:
-                return render (request,'res_busc_peli.html', {'peliculas':peliculas,'peli':nombre})
+            
+            if avatares:
+                if peliculas:
+                    return render (request,'res_busc_peli.html', {'peliculas':peliculas,'peli':nombre,'avatar':avatares[0].imagen.url})
+                else:
+                    peliculas = Pelicula.objects.all()
+                    texto2 = f'no se han encontrado peliculas conteniendo "{nombre}"'
+                    return render (request,'peliculas.html', {"peliculas":peliculas,"texto2":texto2,'avatar':avatares[0].imagen.url})
             else:
-                peliculas = Pelicula.objects.all()
-                texto2 = f'no se han encontrado peliculas conteniendo "{nombre}"'
-                return render (request,'peliculas.html', {"peliculas":peliculas,"texto2":texto2})   
+                if peliculas:
+                    return render (request,'res_busc_peli.html', {'peliculas':peliculas,'peli':nombre,'avatar':avatares[0].imagen.url})
+                else:
+                    peliculas = Pelicula.objects.all()
+                    texto2 = f'no se han encontrado peliculas conteniendo "{nombre}"'
+                    return render (request,'peliculas.html', {"peliculas":peliculas,"texto2":texto2,'avatar':avatares[0].imagen.url})   
         else:
             peliculas = Pelicula.objects.all()
             texto = f'Ingrese un texto en el campo de búsqueda'
@@ -445,13 +488,22 @@ def panel (request):
     peliculas = Pelicula.objects.all()
     paginas = Posteo.objects.all()
     mensajes = Mensaje.objects.all()
+    avatares = Avatar.objects.filter(user=request.user.id)    
 
-    datos = {'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes}
-
-
-    return render (request,'panel.html',datos)
+    if avatares:
+        return render (request,'panel.html',{'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes,'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+        datos = {'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes,'avatar':no_avatar}
+        return render (request,'panel.html',datos)
 
 def acerca(request):
-    return render (request, 'acerca.html')
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares:
+        return render (request,'acerca.html',{'avatar':avatares[0].imagen.url})
+    else:
+        no_avatar =   '/static/Blog/assets/img/noavatar.webp'
+        return render (request,'acerca.html',{'avatar':no_avatar})
+   
 
 

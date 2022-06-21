@@ -23,7 +23,8 @@ path('eliminar_mensaje/<int:id>', views.eliminar_mensaje, name="eliminar_mensaje
 path('editar_pagina/<int:id>', views.editar_pagina, name='editar_pagina'),
 path('editar_mensaje/<int:id>', views.editar_mensaje,name='editar_mensaje'),
 path('editar_imagen_pagina/<int:id>', views.editar_imagen_pagina, name='editar_imagen_pagina'),
-path('panel',views.panel, name="panel")
+path('panel',views.panel, name="panel"),
+
 
 
 ]
