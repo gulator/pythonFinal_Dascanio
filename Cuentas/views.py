@@ -13,6 +13,13 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+def imagenAvatar(a,**kwargs):
+    avatares = a
+    if avatares:                                  
+        return (avatares[0].imagen.url)
+    else:
+        no_avatar = '/static/Blog/assets/img/noavatar.webp'
+        return (no_avatar)
 
 
 def login_request (request):
@@ -75,6 +82,7 @@ def logout_usuario (request):
 
 @login_required
 def editar_usuario (request):
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
 
     usuario = request.user
 
@@ -96,60 +104,41 @@ def editar_usuario (request):
                 avatares = Avatar.objects.filter(user=request.user.id)
                 usuario = request.user.username
                 posteos = Posteo.objects.filter(autor=request.user.username)
-
-                if avatares:                                  
-                    return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos,'usuario':usuario,'msg_edit_usuario':'Datos actualizados'})
-                else:
-                    no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-                documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos,'msg_edit_usuario':'Datos actualizados'}
-
-                return render (request,'perfil.html',documento)
+                                                 
+                return render (request,'perfil.html', {'avatar':avatar,'posteos':posteos,'datos':datos,'usuario':usuario,'msg_edit_usuario':'Datos actualizados'})
+                
             else:
-                documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos,'msg_edit_usuario_error':'Las contraseñas no coinciden'}
+                documento = {'avatar':avatar, 'usuario':usuario,'posteos':posteos,'datos':datos,'msg_edit_usuario_error':'Las contraseñas no coinciden'}
                 return render (request,'perfil.html',documento)
         else:
+            datos = request.user
+            avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+            usuario = request.user.username
+            posteos = Posteo.objects.filter(autor=request.user.username)
+                                  
+            return render (request,'perfil.html', {'avatar':avatar,'posteos':posteos,'datos':datos,'usuario':usuario,'msg_edit_usuario_error':'Las contraseñas no coinciden'})
+         
+
+@login_required
+def editar_avatar(request):
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))    
+
+    if request.method == "POST":
+        formulario = Avatar_Formulario(request.POST, request.FILES)
+
+        if formulario.is_valid():
+            id = imagen[0].id
+            cambio = Avatar.objects.get(id=id)
+            avatar = formulario.cleaned_data                 
+            cambio.imagen = avatar['imagen']            
+            cambio.save()
+
             datos = request.user
             avatares = Avatar.objects.filter(user=request.user.id)
             usuario = request.user.username
             posteos = Posteo.objects.filter(autor=request.user.username)
-
-            if avatares:                                  
-                return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos,'usuario':usuario,'msg_edit_usuario_error':'Las contraseñas no coinciden'})
-            else:
-                no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-
-            documento = {'avatar':no_avatar, 'usuario':usuario,'posteos':posteos,'datos':datos,'msg_edit_usuario_error':'Las contraseñas no coinciden'}
-            return render (request,'perfil.html',documento)
-              
-        
-    """else:
-        formulario = Editar_Usuario_Form(initial={'email':usuario.email,'first_name':usuario.first_name,'last_name':usuario.last_name})
-
-
-    return render (request, 'editar_usuario.html', {'formulario':formulario,'usuario':usuario})"""
-
-@login_required
-def editar_avatar(request):
-
-    if Avatar.objects.filter(user=request.user.id):
-        imagen = Avatar.objects.filter(user=request.user.id)    
-
-        if request.method == "POST":
-            formulario = Avatar_Formulario(request.POST, request.FILES)
-
-            if formulario.is_valid():
-                id = imagen[0].id
-                cambio = Avatar.objects.get(id=id)
-                avatar = formulario.cleaned_data                 
-                cambio.imagen = avatar['imagen']            
-                cambio.save()
-
-                datos = request.user
-                avatares = Avatar.objects.filter(user=request.user.id)
-                usuario = request.user.username
-                posteos = Posteo.objects.filter(autor=request.user.username)
                                                 
-                return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos})
+            return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'posteos':posteos,'datos':datos})
 
     
         else:
@@ -157,9 +146,15 @@ def editar_avatar(request):
         
         return render (request,'editar_avatar.html')
     
+    avatares = Avatar.objects.filter(user=request.user.id)
+    
+    if avatares:
+        avatar = Avatar.objects.filter(user=request.user.id)  
+        return render(request,'editar_avatar.html',{'avatar':avatar})
+
     else:
         usuario = request.user.id
-        avatar = Avatar (imagen="avatares/noavatar.webp",user_id=usuario)
-        avatar.save()
+        imagenes = Avatar (imagen="avatares/noavatar.webp",user_id=usuario)
+        imagenes.save()
         imagen = Avatar.objects.get(user_id=usuario)             
-        return render (request,'editar_avatar.html',{'imagen':imagen})
+        return render (request,'editar_avatar.html',{'avatar':avatar})
