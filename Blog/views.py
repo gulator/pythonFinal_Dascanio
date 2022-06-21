@@ -260,11 +260,11 @@ def alta_pagina (request):
             texto = f'error en uno de los campos'
             return render(request,'alta_paginas.html',{'texto':texto,'avatar':avatar})
            
-
+    formulario = Pagina_formulario2() #agregado
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     usuario = request.user.username
                                   
-    return render (request,'alta_paginas.html',{'avatar':avatar,'fecha':fecha,'usuario':usuario})
+    return render (request,'alta_paginas.html',{'avatar':avatar,'fecha':fecha,'usuario':usuario,'formulario':formulario})
 
 
 def buscar_pelicula(request):    
@@ -379,10 +379,10 @@ def perfil (request, id):
     datos = request.user
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
     usuario = request.user.username
-    posteos = Posteo.objects.filter(autor=request.user.username)
+    paginas = Posteo.objects.filter(autor=request.user.username)
     mensajes = Mensaje.objects.filter(autor=request.user.username)
                                      
-    return render (request,'perfil.html', {'avatar':avatar,'posteos':posteos,'datos':datos,'mensajes':mensajes,'usuario':usuario})
+    return render (request,'perfil.html', {'avatar':avatar,'paginas':paginas,'datos':datos,'mensajes':mensajes,'usuario':usuario})
     
 
 @login_required

@@ -4,6 +4,7 @@ from django.db import models
 import datetime
 import os
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -18,7 +19,8 @@ class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
     titulo = models.CharField(max_length=80)
     subtitulo = models.CharField(max_length=80)
     pelicula = models.CharField(max_length=60)
-    cuerpo = models.TextField()
+    cuerpo = RichTextField(blank=True, null=True)
+    #cuerpo = models.TextField()
     autor = models.CharField(max_length=40)
     fecha = models.DateTimeField()
     editado = models.CharField(max_length=10)

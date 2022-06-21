@@ -1,9 +1,9 @@
 from dataclasses import fields
 from logging import PlaceHolder
-from pyexpat import model
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from .models import Posteo
 
 
 class Pelicula_formulario(forms.Form):
@@ -45,6 +45,12 @@ class Pagina_formulario(forms.Form):
     autor = forms.CharField(max_length=40)
     fecha = forms.DateTimeField()
     imagen = forms.ImageField()
+
+class Pagina_formulario2(forms.ModelForm):
+    class Meta:
+        model = Posteo
+        fields = ('titulo', 'subtitulo','pelicula','cuerpo','imagen')
+
 
 class Editar_Pagina_formulario(forms.Form):
     titulo = forms.CharField(max_length=80)
