@@ -51,7 +51,7 @@ def pagina_single(request, id):
     pagina = Posteo.objects.get(id=id)
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
     autor = request.user.username
-    mensajes = Mensaje.objects.filter(id_clase=id)
+    mensajes = Mensaje.objects.filter(id_clase=id, clase='pagina')
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     if request.method == 'POST':  #Crea los mensajes para cada pagina individual
@@ -59,7 +59,7 @@ def pagina_single(request, id):
         
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],avatar = datos['avatar'],comentario = datos['comentario'],id_clase=datos['id_clase'])
+            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],comentario = datos['comentario'],id_clase=datos['id_clase'],pelicula = datos['pelicula'],clase = datos['clase'])
             mensaje.save()
         else:
             print ("formulario invalido!")    
@@ -82,7 +82,7 @@ def pelicula_single(request, id):
     pelicula = Pelicula.objects.get(id=id)
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
     autor = request.user.username
-    mensajes = Mensaje.objects.filter(id_clase=id)
+    mensajes = Mensaje.objects.filter(id_clase=id, clase='pelicula')
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")     
 
     if request.method == 'POST':
@@ -90,7 +90,7 @@ def pelicula_single(request, id):
 
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],comentario = datos['comentario'],id_clase=datos['id_clase'],pelicula = datos['pelicula'],clase = datos['clase'],)
+            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],comentario = datos['comentario'],id_clase=datos['id_clase'],pelicula = datos['pelicula'],clase = datos['clase'])
             mensaje.save()
         else:
             print ("formulario invalido!") 
@@ -130,7 +130,7 @@ def editar_pelicula(request, id):
             
     else: 
                 
-        formulario = Pelicula_formulario(initial={'nombre':pelicula.nombre,'trama_breve':pelicula.trama_breve,'trama_larga':pelicula.trama_larga,'anio':pelicula.anio}) 
+        formulario = Editar_Pelicula(initial={'nombre':pelicula.nombre,'trama_breve':pelicula.trama_breve,'trama_larga':pelicula.trama_larga,'anio':pelicula.anio}) 
                                       
     return render (request,'form_editar_pelicula.html', {'formulario':formulario,'pelicula':pelicula,'avatar':avatar})
     
@@ -172,8 +172,8 @@ def alta_pelicula (request):
             texto = f"error en uno de los campos"
             return render (request,'alta_peliculas.html',{'texto':texto,'avatar':avatar})
     
-                                      
-    return render (request,'alta_peliculas.html',{'avatar':avatar})
+    formulario = Pelicula_Crear()                                  
+    return render (request,'alta_peliculas.html',{'avatar':avatar,'formulario':formulario})
     
 
 @login_required
@@ -185,8 +185,20 @@ def eliminar_mensaje (request,id):
     peliculas = Pelicula.objects.all()
     paginas = Posteo.objects.all()
     mensajes = Mensaje.objects.all()
-                                 
-    return render (request,'panel.html', {'avatar':avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
+
+    tipo_usuario = request.user.is_staff
+
+    if tipo_usuario == 1:
+         return render (request,'panel.html', {'avatar':avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
+    else:
+        datos = request.user        
+        usuario = request.user.username
+        paginas = Posteo.objects.filter(autor=request.user.username)
+        mensajes = Mensaje.objects.filter(autor=request.user.username)
+                                        
+        return render (request,'perfil.html', {'avatar':avatar,'paginas':paginas,'datos':datos,'mensajes':mensajes,'usuario':usuario})
+
+   
     
 
 @login_required
@@ -253,14 +265,15 @@ def alta_pagina (request):
             pagina = Posteo(titulo = datos['titulo'],subtitulo = datos['subtitulo'],pelicula = datos['pelicula'],cuerpo = datos['cuerpo'],autor = datos['autor'],fecha = datos['fecha'],imagen = datos['imagen'],)
             pagina.save()
             texto = f'Post creado con exito'
+            paginas = Posteo.objects.all()
 
-            return render(request,'paginas.html',{'texto':texto,'avatar':avatar})
+            return render(request,'paginas.html',{'texto':texto,'avatar':avatar,'paginas':paginas})
             
         else:
             texto = f'error en uno de los campos'
             return render(request,'alta_paginas.html',{'texto':texto,'avatar':avatar})
            
-    formulario = Pagina_formulario2() #agregado
+    formulario = Pagina_Crear() 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     usuario = request.user.username
                                   
@@ -342,10 +355,11 @@ def editar_pagina (request, id):
             #return HttpResponse(texto)
             return render (request, 'form_editar_pagina.html', {'paginas':paginas, 'texto':texto,'avatar':avatar})
     
-
+    
+    formulario = Editar_Pagina(initial={'titulo':paginas.titulo,'subtitulo':paginas.subtitulo,'pelicula':paginas.pelicula,'cuerpo':paginas.cuerpo})
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")    
     usuario = request.user.username
-    return render (request,'form_editar_pagina.html', {'paginas':paginas,'fecha':fecha, 'usuario':usuario,'avatar':avatar})
+    return render (request,'form_editar_pagina.html', {'paginas':paginas,'fecha':fecha, 'usuario':usuario,'avatar':avatar,'formulario':formulario})
 
 @login_required
 def editar_imagen_pagina (request, id):

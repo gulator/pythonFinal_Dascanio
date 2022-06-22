@@ -20,7 +20,6 @@ class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
     subtitulo = models.CharField(max_length=80)
     pelicula = models.CharField(max_length=60)
     cuerpo = RichTextField(blank=True, null=True)
-    #cuerpo = models.TextField()
     autor = models.CharField(max_length=40)
     fecha = models.DateTimeField()
     editado = models.CharField(max_length=10)
@@ -32,7 +31,7 @@ class Posteo (models.Model):  #La clase pertenece a todo lo referido a "paginas"
 class Pelicula (models.Model):
     nombre = models.CharField(max_length=60)
     trama_breve = models.CharField(max_length=250)
-    trama_larga = models.TextField()
+    trama_larga = RichTextField(blank=True, null=True)
     anio = models.IntegerField()
     imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
 

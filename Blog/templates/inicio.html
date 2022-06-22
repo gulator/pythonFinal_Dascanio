@@ -3,6 +3,9 @@
 {% block bloque1 %}
 
 <secion>
+    {% if usuario_creado %}
+    <h6 style="color: green ; text-align: center;">{{usuario_creado}}</h6>
+    {% endif %}
     <h3 class="texto-inicio" style="text-align: center;">Bienvenido/a a JD movie Blog</h3><br>
 </section>
 <section class="showcase">

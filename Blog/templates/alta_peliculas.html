@@ -3,45 +3,34 @@
 {% block bloque1 %}
 
 <div class="container">
-    <div style="margin: auto;width: 600px;align-content: center;">
-        <form action="/Blog/alta_pelicula" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col" style="text-align: center;">
-                    <h3 style="color: rgb(236, 255, 168);">Alta de Pelicula</h3>
-                        {% if texto%}
-                        <div class="alert alert-danger" role="alert" style="text-align: center;">
-                        {{texto}}
-                        </div>
-                        {% endif %}
-                        <div class="input-group mb-3" style="margin: auto;">                    
-                            <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;">Nombre</span>
-                            <input type="text" class="form-control form-control-sm oscuro" name="nombre" maxlength="100" placeholder="Nombre de la pelicula">
-                        </div>
-                        <div class="input-group mb-3">                    
-                            <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;"">resumen</span>
-                            <textarea type="textarea" class="form-control" name="trama_breve"  rows="4" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;" maxlength="250"></textarea>                            
-                        </div>
-                        <div class="input-group mb-3">                    
-                            <span class="input-group-text mota" id="basic-addon1" style="width: 100px ;"">trama</span>
-                            <textarea type="text" class="form-control" name="trama_larga"  rows="12" style="background-color: rgb(190, 190, 190); width: 80%;margin: auto;"></textarea>
-                            
-                        </div>
-                        <div class="input-group mb-3">                    
-                            <span class="input-group-text mota" id="basic-addon1"style="width: 100px ;"">Año</span>
-                            <input type="number" class="form-control form-control-sm oscuro" name="anio" placeholder="Año de lanzamiento">
-                        </div>
-                        <div class="text-muted-it-cream small" style="text-align: left;">Seleccioná una imagen para la portada:</div>
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control form-control-sm oscuro" name="imagen">
-                        </div>
-                        <button class="btn btn-secondary" type="submit"> Enviar</button>
-                </div>
-        
-            </div>
-        </form>
-    </div>
+	<div class="row">
+    	<div class="col">  
+			<div class="form-control-modo-oscuro" style="width: 75% ; margin-right: 50%; margin-left: 10%;">
+				<form action="/Blog/alta_pelicula" method="POST" enctype="multipart/form-data" style="color: whitesmoke;">
+    			
+					{% csrf_token %}
+
+					<h3 style="color: rgb(236, 255, 168);">Crear una Pelicula</h3>
+
+					{% if texto %}
+
+					<div class="alert alert-danger" role="alert" style="text-align: center;">
+					{{texto}}
+					</div>
+					
+					{% endif %}
+
+					{{formulario.media}}
+					{{formulario.as_p}}
+
+					<button class="btn btn-secondary" type="submit">Crear</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
+
 
 
 

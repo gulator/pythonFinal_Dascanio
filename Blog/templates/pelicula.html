@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row"></div>      
             <div class="col" align="center">
-                <img src="{{pelicula.imagen.url}}" style="height: 300px;">
+                <img src="{{pelicula.imagen.url}}" style="height: 360px;">
             </div>
             <div class="col">
                     <div class="card-body-dark">
@@ -22,7 +22,7 @@
                         <h5 class="card-title" style="color: white;">{{pelicula.nombre}}</h5>
                         <p class="card-text"><small class="text-muted">{{pelicula.anio}}</small></p>
                         <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_breve}}</p>
-                        <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_larga}}</p>
+                        <p >{{pelicula.trama_larga | safe}}</p>
                               
             </div>
         </div>           

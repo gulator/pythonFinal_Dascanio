@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+import random
 
 # Create your views here.
 
@@ -23,8 +24,12 @@ def imagenAvatar(a,**kwargs):
 
 
 def login_request (request):
-
+    
+    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
+    portada = random.choice(archivos)
+    
     if request.method == 'POST':
+        
         formulario = Login_formulario(request, data=request.POST)
 
         if formulario.is_valid():
@@ -35,12 +40,8 @@ def login_request (request):
 
             if user is not None:
                 login(request,user)
-                avatares = Avatar.objects.filter(user=request.user.id)
-                if avatares:                                  
-                    return render (request,'inicio.html', {'avatar':avatares[0].imagen.url})
-                else:
-                    no_avatar =   '/static/Blog/assets/img/noavatar.webp'
-                    return render (request,'inicio.html', {'avatar':no_avatar})
+                avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))                                     
+                return render (request,'inicio.html',{'avatar':avatar,'portada':portada})                
             else:
                 return render (request,'login.html',{'mensaje':"Error. Formulario erroneo."})    
 
@@ -55,20 +56,24 @@ def login_request (request):
 
 def register (request):
 
+    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
+    portada = random.choice(archivos)
+
     if request.method == 'POST':
-        #form = UserCreationForm(request.POST)
+        
         form = RegisterUserForm(request.POST)
         
 
         if form.is_valid():
             username = form.cleaned_data['username']
             form.save()
+            
 
-            return render(request,'inicio.html',{'mensaje':'Usuario Creado'})    
+            return render (request,'inicio.html',{'usuario_creado':'Usuario Creado','portada':portada})    
 
        
     else:
-        #form = UserCreationForm()
+        
         form = RegisterUserForm(request.POST)       
 
     return render (request, 'register.html',{'form':form})

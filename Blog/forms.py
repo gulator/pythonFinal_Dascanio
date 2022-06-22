@@ -1,9 +1,11 @@
 from dataclasses import fields
 from logging import PlaceHolder
+from tkinter import Widget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Posteo
+from .models import Pelicula, Posteo
+from ckeditor.fields import RichTextField,RichTextFormField
 
 
 class Pelicula_formulario(forms.Form):
@@ -13,6 +15,29 @@ class Pelicula_formulario(forms.Form):
     anio = forms.IntegerField()
     imagen = forms.ImageField()
 
+class Pelicula_Crear(forms.ModelForm):
+
+    nombre = forms.CharField(max_length=60, label=('Nombre de la pelicula:'), widget=forms.TextInput(attrs={'class':'form-control'}))
+    trama_breve = forms.CharField(max_length=250, label=('Resumen:'), widget=forms.Textarea(attrs={'class':'form-control','rows':"4"}))    
+    anio = forms.IntegerField(label=('Año:'), widget=forms.NumberInput(attrs={'class':'form-control'}))
+    class Meta:
+        model = Pelicula
+        fields = ('nombre', 'trama_breve', 'trama_larga', 'anio', 'imagen')   
+    Widget = {
+        'trama_larga' : forms.Textarea(attrs={'class': 'form-control'})
+    }
+
+class Editar_Pelicula(forms.ModelForm):
+
+    nombre = forms.CharField(max_length=60, label=('Nombre de la pelicula:'), widget=forms.TextInput(attrs={'class':'form-control'}))
+    trama_breve = forms.CharField(max_length=250, label=('Resumen:'), widget=forms.Textarea(attrs={'class':'form-control','rows':"4"}))    
+    anio = forms.IntegerField(label=('Año:'), widget=forms.NumberInput(attrs={'class':'form-control'}))
+    class Meta:
+        model = Pelicula
+        fields = ('nombre', 'trama_breve', 'trama_larga', 'anio')   
+    Widget = {
+        'trama_larga' : forms.Textarea(attrs={'class': 'form-control'})
+    }    
 
 class Editar_Pelicula_Formulario(forms.Form):
     nombre = forms.CharField(max_length=60)
@@ -46,10 +71,18 @@ class Pagina_formulario(forms.Form):
     fecha = forms.DateTimeField()
     imagen = forms.ImageField()
 
-class Pagina_formulario2(forms.ModelForm):
+class Pagina_Crear(forms.ModelForm):
     class Meta:
         model = Posteo
         fields = ('titulo', 'subtitulo','pelicula','cuerpo','imagen')
+
+        widgets = {
+            'titulo' : forms.TextInput(attrs={'class': 'form-control'}),
+            'subtitulo' : forms.TextInput(attrs={'class': 'form-control'}),
+            'pelicula' : forms.TextInput(attrs={'class': 'form-control'}),
+            'cuerpo' : forms.Textarea(attrs={'class': 'form-control'}),            
+
+        }
 
 
 class Editar_Pagina_formulario(forms.Form):
@@ -60,6 +93,19 @@ class Editar_Pagina_formulario(forms.Form):
     autor = forms.CharField(max_length=40)
     fecha = forms.DateTimeField()
     editado = forms.CharField(max_length=10)
+
+class Editar_Pagina(forms.ModelForm):
+    class Meta:
+        model = Posteo
+        fields = ('titulo', 'subtitulo','pelicula','cuerpo')
+
+        widgets = {
+            'titulo' : forms.TextInput(attrs={'class': 'form-control'}),
+            'subtitulo' : forms.TextInput(attrs={'class': 'form-control'}),
+            'pelicula' : forms.TextInput(attrs={'class': 'form-control'}),
+            'cuerpo' : forms.Textarea(attrs={'class': 'form-control'}),           
+        }
+        
 
 class Editar_Imagen(forms.Form):    
     imagen = forms.ImageField()
