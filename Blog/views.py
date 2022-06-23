@@ -92,7 +92,7 @@ def peliculas (request):
     return render (request,'peliculas.html', {'peliculas':peliculas,'avatar':avatar})
     
 
-@login_required
+
 def pelicula_single(request, id):   
 
     pelicula = Pelicula.objects.get(id=id)
@@ -150,9 +150,8 @@ def editar_pelicula(request, id):
             pelicula.trama_larga = datos['trama_larga']
             pelicula.anio = datos['anio']
             pelicula.save()
-            pelicula = Pelicula.objects.get(id=id)
-                                
-            return render (request,'pelicula.html', {'avatar':avatar,'pelicula':pelicula})
+
+            return redirect('pelicula_single', id) 
     else:         
         formulario = Editar_Pelicula(initial={'nombre':pelicula.nombre,
                                               'trama_breve':pelicula.trama_breve,
@@ -177,8 +176,8 @@ def editar_imagen_pelicula(request, id):
             datos = formulario.cleaned_data
             imagen.imagen=datos['imagen']
             imagen.save()
-                                             
-            return render (request,'pelicula.html', {'pelicula':imagen,'avatar':avatar})  
+              
+            return redirect ('pelicula_single', id) 
                                       
     return render (request,'editar_imagen_pelicula.html', {'imagen':imagen,'avatar':avatar})    
 
@@ -249,25 +248,20 @@ def editar_mensaje (request,id):
     if request.method == 'POST':
         formulario = Editar_Mensaje_formulario(request.POST)
         if formulario.is_valid():
-            datos = formulario.cleaned_data
-            comentario.fecha = datos['fecha']
-            comentario.editado = datos['editado']
-            comentario.comentario = datos['comentario']
+            datos_msg = formulario.cleaned_data
+            comentario.fecha = datos_msg['fecha']
+            comentario.editado = datos_msg['editado']
+            comentario.comentario = datos_msg['comentario']
             comentario.save()
-            peliculas = Pelicula.objects.all()
-            usuario = request.user.username
-            paginas = Posteo.objects.filter(autor=request.user.username)
-            mensajes = Mensaje.objects.filter(autor=request.user.username)
-                                              
-            return render (request,'perfil.html', {'avatar':avatar,
-                                                  'peliculas':peliculas,
-                                                  'paginas':paginas,
-                                                  'mensajes':mensajes,
-                                                  'datos':usuario
-                                                  })
+            
+            usuario = request.user.id
+
+            return redirect('perfil',usuario)                                  
+            
         else:
-            texto = f'error en uno de los campos'
-            return render(request,'perfil.html',{'texto':texto,'avatar':avatar})
+            fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            texto = f'error en el formulario'
+            return render(request,'form_editar_mensaje.html.html',{'texto':texto,'avatar':avatar,'fecha':fecha,'comentario':comentario})
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
                       
     return render (request,'form_editar_mensaje.html',{'fecha':fecha,
@@ -327,10 +321,10 @@ def alta_pagina (request):
                             imagen = datos['imagen']
                             )
             pagina.save()
-            texto = f'Post creado con exito'
+            texto3 = f'Post creado con exito'
             paginas = Posteo.objects.all()
 
-            return render(request,'paginas.html',{'texto':texto,
+            return render(request,'paginas.html',{'texto3':texto3,
                                                   'avatar':avatar,
                                                   'paginas':paginas
                                                   })
@@ -434,14 +428,26 @@ def editar_pagina (request, id):
             paginas.editado = datos['editado']            
             paginas.save()
 
-            pagina = Posteo.objects.get(id=id)           
-            return render (request,'pagina.html',{"pagina":pagina,'avatar':avatar})
+            paginas = Posteo.objects.all()
+            autor = request.user.username
+            mensajes = Mensaje.objects.filter(id_clase=id, clase='pagina')
+            fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            datos = request.user           
+            
+            return redirect ('pagina_single', id)
+           
         else:
             texto = f"algunos campos contienen errores"
-            
-            return render (request, 'form_editar_pagina.html', {'paginas':paginas,
+            pagina = Posteo.objects.get(id=id)
+            autor = request.user.username
+            mensajes = Mensaje.objects.filter(id_clase=id, clase='pagina')
+            fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+            return render (request, 'form_editar_pagina.html', {'pagina':pagina,
                                                                 'texto':texto,
-                                                                'avatar':avatar
+                                                                'avatar':avatar,
+                                                                'mensajes':mensajes,
+                                                                'autor':autor,
+                                                                'fecha':fecha
                                                                 })
     formulario = Editar_Pagina(initial={'titulo':paginas.titulo,
                                         'subtitulo':paginas.subtitulo,
@@ -471,8 +477,9 @@ def editar_imagen_pagina (request, id):
             datos = formulario.cleaned_data
             imagen.imagen = datos['imagen']
             imagen.save()
-            pagina = Posteo.objects.get(id=id)
-            return render(request,'pagina.html',{'pagina':pagina,'avatar':avatar})
+            
+            return redirect ('pagina_single', id)
+            
         else:
             texto = f'la imagen no es de un formato valido'
             pagina = Posteo.objects.get(id=id)

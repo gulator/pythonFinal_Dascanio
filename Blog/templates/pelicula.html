@@ -29,7 +29,7 @@
        
     </div>
 </form>
-<br>
+<br>{% if user.is_authenticated %}
     <section class="mb-5">
         <div class="card" style="background-color:rgb(53, 53, 53)">
             <div class="card-body">
@@ -60,11 +60,26 @@
             </div>
         </div>
     </section>
-
-
-    
-
-
-
+    {% else %}
+    {% if mensajes %}
+    <section class="mb-5">
+        <div class="card" style="background-color:rgb(53, 53, 53)">
+            <div class="card-body">                
+                <!-- Comments-->  
+                <br>
+                {% for m in mensajes %}              
+                <div class="d-flex">                    
+                    <div class="ms-3">
+                        <div class="text-muted-it-cream xsmall" style="margin-left: auto; color: rgb(214, 255, 255);"><strong>{{m.autor}}</strong> {{m.fecha}} {{m.editado}}</class></div>                        
+                        <p style="color: rgb(231, 231, 231);">{{m.comentario}}</p>
+                    </div>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% endif %}
 
 {% endblock %}

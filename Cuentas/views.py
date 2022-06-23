@@ -96,14 +96,8 @@ def editar_usuario (request):
                 usuario.save()
                 datos = request.user
                 usuario = request.user.username
-                
-                                                 
-                return render (request,'perfil.html', {'avatar':avatar,
-                                                       'paginas':paginas,
-                                                       'datos':datos,
-                                                       'usuario':usuario,
-                                                       'mensajes':mensajes,
-                                                       'msg_edit_usuario':'Datos actualizados'})
+                id = request.user.id
+                return redirect('perfil',id)
         else:
             documento = {'avatar':avatar,
                          'usuario':nombre_usuario,
@@ -147,13 +141,11 @@ def editar_avatar(request):
             usuario = request.user.username
             paginas = Posteo.objects.filter(autor=request.user.username)
             mensajes = Mensaje.objects.filter(autor=request.user.username)
+            id_usuario = request.user.id
+
+            return redirect ('perfil', id_usuario)
                                                 
-            return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,
-                                                   'paginas':paginas,
-                                                   'datos':datos,
-                                                   'mensajes':mensajes,
-                                                   'usuario':usuario,
-                                                   })
+            #return render (request,'perfil.html', {'avatar':avatares[0].imagen.url,'paginas':paginas,'datos':datos,'mensajes':mensajes,'usuario':usuario,})
         else:
             formulario = Avatar_Formulario()
         
@@ -201,6 +193,7 @@ def cambiar_password(request):
                 return render (request, 'cambiar_password.html',{'avatar':avatar,'msg_edit_usuario_error':'Las contraseñas no coinciden'})                                            
         else:            
             return render (request, 'cambiar_password.html',{'avatar':avatar,'msg_edit_usuario_error':'contraseña invalida'})
-
+    
     else:
-        return render (request, 'cambiar_password.html',{'avatar':avatar})
+        formulario = CambiarPassword()
+        return render (request, 'cambiar_password.html',{'avatar':avatar,'formulario':formulario})

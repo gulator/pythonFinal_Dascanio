@@ -29,9 +29,9 @@ class Pelicula_Crear(forms.ModelForm):
 
 class Editar_Pelicula(forms.ModelForm):
 
-    nombre = forms.CharField(max_length=60, label=('Nombre de la pelicula:'), widget=forms.TextInput(attrs={'class':'form-control'}))
-    trama_breve = forms.CharField(max_length=250, label=('Resumen:'), widget=forms.Textarea(attrs={'class':'form-control','rows':"4"}))    
-    anio = forms.IntegerField(label=('Año:'), widget=forms.NumberInput(attrs={'class':'form-control'}))
+    nombre = forms.CharField(max_length=60, label=('Nombre de la pelicula:'), required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    trama_breve = forms.CharField(max_length=250, label=('Resumen:'), required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':"4"}))    
+    anio = forms.IntegerField(label=('Año:'), required=False, widget=forms.NumberInput(attrs={'class':'form-control'}))
     class Meta:
         model = Pelicula
         fields = ('nombre', 'trama_breve', 'trama_larga', 'anio')   
@@ -91,7 +91,7 @@ class Editar_Pagina_formulario(forms.Form):
     cuerpo = forms.CharField (widget=forms.Textarea)    
     autor = forms.CharField(max_length=40)
     fecha = forms.DateTimeField()
-    editado = forms.CharField(max_length=10)
+    editado = forms.CharField(max_length=10, required=False)
 
 class Editar_Pagina(forms.ModelForm):
     class Meta:
@@ -146,8 +146,8 @@ class Editar_Usuario_Form (UserCreationForm):
         help_texts = {k:"" for k in fields} 
 
 class CambiarPassword (UserCreationForm):
-    password1 = forms.CharField(label=('Contraseña'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
-    password2 = forms.CharField(label=('Confirmar'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    password1 = forms.CharField(label=('Contraseña'), widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    password2 = forms.CharField(label=('Confirmar'), widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
 
     class Meta:
         model = User
