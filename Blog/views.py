@@ -29,12 +29,20 @@ def imagenAvatar(a,**kwargs):
 
 def inicio (request):    
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
-    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
-    portada = random.choice(archivos)    
-
+    archivos = ['image1.jpg',
+                'image2.jpg',
+                'image3.jpg',
+                'image4.jpg',
+                'image5.jpg',
+                'image6.jpg',
+                'image7.jpg',
+                'image8.jpg',
+                'image9.jpg',
+                'image10.jpg'
+                ]
+    portada = random.choice(archivos) 
     
     return render (request,'inicio.html', {'avatar':avatar,'portada':portada})
-    
 
 
 def paginas (request):
@@ -42,7 +50,6 @@ def paginas (request):
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
                                      
     return render (request,'paginas.html', {'avatar':avatar,'paginas':paginas})
-    
 
 
 @login_required
@@ -59,14 +66,23 @@ def pagina_single(request, id):
         
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],comentario = datos['comentario'],id_clase=datos['id_clase'],pelicula = datos['pelicula'],clase = datos['clase'])
+            mensaje = Mensaje(autor = datos['autor'],
+                              fecha = datos['fecha'],
+                              comentario = datos['comentario'],
+                              id_clase=datos['id_clase'],
+                              pelicula = datos['pelicula'],
+                              clase = datos['clase']
+                              )
             mensaje.save()
         else:
-            print ("formulario invalido!")    
-
+            print ("formulario invalido!") 
                                       
-    return render (request,'pagina.html', {'pagina':pagina,'avatar':avatar,'mensajes':mensajes,'autor':autor,'fecha':fecha})
-    
+    return render (request,'pagina.html', {'pagina':pagina,
+                                           'avatar':avatar,
+                                           'mensajes':mensajes,
+                                           'autor':autor,
+                                           'fecha':fecha}
+                                           )
 
 
 def peliculas (request):
@@ -90,12 +106,23 @@ def pelicula_single(request, id):
 
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            mensaje = Mensaje(autor = datos['autor'],fecha = datos['fecha'],comentario = datos['comentario'],id_clase=datos['id_clase'],pelicula = datos['pelicula'],clase = datos['clase'])
+            mensaje = Mensaje(autor = datos['autor'],
+                              fecha = datos['fecha'],
+                              comentario = datos['comentario'],
+                              id_clase=datos['id_clase'],
+                              pelicula = datos['pelicula'],
+                              clase = datos['clase']
+                              )
             mensaje.save()
         else:
             print ("formulario invalido!") 
                                       
-    return render (request,'pelicula.html', {'pelicula':pelicula,'avatar':avatar,'mensajes':mensajes,'autor':autor,'fecha':fecha})
+    return render (request,'pelicula.html', {'pelicula':pelicula,
+                                             'avatar':avatar,
+                                             'mensajes':mensajes,
+                                             'autor':autor,
+                                             'fecha':fecha
+                                             })
     
 
 @login_required
@@ -123,16 +150,20 @@ def editar_pelicula(request, id):
             pelicula.trama_larga = datos['trama_larga']
             pelicula.anio = datos['anio']
             pelicula.save()
-
             pelicula = Pelicula.objects.get(id=id)
                                 
             return render (request,'pelicula.html', {'avatar':avatar,'pelicula':pelicula})
-            
-    else: 
-                
-        formulario = Editar_Pelicula(initial={'nombre':pelicula.nombre,'trama_breve':pelicula.trama_breve,'trama_larga':pelicula.trama_larga,'anio':pelicula.anio}) 
+    else:         
+        formulario = Editar_Pelicula(initial={'nombre':pelicula.nombre,
+                                              'trama_breve':pelicula.trama_breve,
+                                              'trama_larga':pelicula.trama_larga,
+                                              'anio':pelicula.anio
+                                              }) 
                                       
-    return render (request,'form_editar_pelicula.html', {'formulario':formulario,'pelicula':pelicula,'avatar':avatar})
+    return render (request,'form_editar_pelicula.html', {'formulario':formulario,
+                                                         'pelicula':pelicula,
+                                                         'avatar':avatar
+                                                         })
     
 
 @login_required
@@ -147,8 +178,7 @@ def editar_imagen_pelicula(request, id):
             imagen.imagen=datos['imagen']
             imagen.save()
                                              
-            return render (request,'pelicula.html', {'pelicula':imagen,'avatar':avatar})            
-
+            return render (request,'pelicula.html', {'pelicula':imagen,'avatar':avatar})  
                                       
     return render (request,'editar_imagen_pelicula.html', {'imagen':imagen,'avatar':avatar})    
 
@@ -162,12 +192,16 @@ def alta_pelicula (request):
         
         if formulario.is_valid():
             datos = formulario.cleaned_data            
-            pelicula = Pelicula(nombre = datos['nombre'],trama_breve = datos['trama_breve'],trama_larga = datos['trama_larga'],anio = datos['anio'],imagen = datos['imagen'])
+            pelicula = Pelicula(nombre = datos['nombre'],
+                                trama_breve = datos['trama_breve'],
+                                trama_larga = datos['trama_larga'],
+                                anio = datos['anio'],
+                                imagen = datos['imagen']
+                                )
             pelicula.save()            
             peliculas = Pelicula.objects.all()
                                   
             return render (request,'peliculas.html', {'peliculas':peliculas,'avatar':avatar})
-            
         else:
             texto = f"error en uno de los campos"
             return render (request,'alta_peliculas.html',{'texto':texto,'avatar':avatar})
@@ -181,24 +215,30 @@ def eliminar_mensaje (request,id):
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
     mensaje = Mensaje.objects.get(id=id)
     mensaje.delete()
-
     peliculas = Pelicula.objects.all()
     paginas = Posteo.objects.all()
     mensajes = Mensaje.objects.all()
-
     tipo_usuario = request.user.is_staff
 
     if tipo_usuario == 1:
-         return render (request,'panel.html', {'avatar':avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
+         return render (request,'panel.html', {'avatar':avatar,
+                                               'peliculas':peliculas,
+                                               'paginas':paginas,
+                                               'mensajes':mensajes
+                                               })
     else:
         datos = request.user        
         usuario = request.user.username
         paginas = Posteo.objects.filter(autor=request.user.username)
         mensajes = Mensaje.objects.filter(autor=request.user.username)
+        
                                         
-        return render (request,'perfil.html', {'avatar':avatar,'paginas':paginas,'datos':datos,'mensajes':mensajes,'usuario':usuario})
-
-   
+        return render (request,'perfil.html', {'avatar':avatar,
+                                               'paginas':paginas,
+                                               'datos':datos,
+                                               'mensajes':mensajes,
+                                               'usuario':usuario
+                                               })
     
 
 @login_required
@@ -214,29 +254,33 @@ def editar_mensaje (request,id):
             comentario.editado = datos['editado']
             comentario.comentario = datos['comentario']
             comentario.save()
-
             peliculas = Pelicula.objects.all()
-            paginas = Posteo.objects.all()
-            mensajes = Mensaje.objects.all()
-
+            usuario = request.user.username
+            paginas = Posteo.objects.filter(autor=request.user.username)
+            mensajes = Mensaje.objects.filter(autor=request.user.username)
                                               
-            return render (request,'panel.html', {'avatar':avatar,'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes})
-                       
-            
+            return render (request,'perfil.html', {'avatar':avatar,
+                                                  'peliculas':peliculas,
+                                                  'paginas':paginas,
+                                                  'mensajes':mensajes,
+                                                  'datos':usuario
+                                                  })
         else:
             texto = f'error en uno de los campos'
-            return render(request,'inicio.html',{'texto':texto,'avatar':avatar})
-
+            return render(request,'perfil.html',{'texto':texto,'avatar':avatar})
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
                       
-    return render (request,'form_editar_mensaje.html',{'fecha':fecha,'avatar':avatar,'comentario':comentario})
+    return render (request,'form_editar_mensaje.html',{'fecha':fecha,
+                                                       'avatar':avatar,
+                                                       'comentario':comentario
+                                                       })
 
 
 def buscar_mensajes (request):
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
     pelicula = Pelicula.objects.all()
     pagina = Posteo.objects.all()
-    texto = f'Ingrese un texto en el campo de búsqueda"'
+    texto = f'Ingrese un texto en el campo de búsqueda'
 
     if request.GET['autor']:
         autor = request.GET['autor']
@@ -244,31 +288,52 @@ def buscar_mensajes (request):
         texto2 = f'no se han encontrado comentarios hechos por "{autor}"'
 
         if mensajes:                                   
-            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':avatar,'pagina':pagina,'pelicula':pelicula,'autor':autor})
-            
+            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,
+                                                            'avatar':avatar,
+                                                            'pagina':pagina,
+                                                            'pelicula':pelicula,
+                                                            'autor':autor})
         else:                       
-            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,'avatar':avatar,'pagina':pagina,'pelicula':pelicula,'autor':autor,'texto2':texto2})            
-
+            return render (request,'res_busc_mensaje.html',{'mensajes':mensajes,
+                                                            'avatar':avatar,
+                                                            'pagina':pagina,
+                                                            'pelicula':pelicula,
+                                                            'autor':autor,
+                                                            'texto2':texto2
+                                                            })   
     else:                      
-        return render (request,'res_busc_mensaje.html',{'avatar':avatar,'pagina':pagina,'pelicula':pelicula,'texto':texto})
+        return render (request,'res_busc_mensaje.html',{'avatar':avatar,
+                                                        'pagina':pagina,
+                                                        'pelicula':pelicula,
+                                                        'texto':texto
+                                                        })
         
 
 @login_required
 def alta_pagina (request):    
-    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
-
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))    
+    
     if request.method == 'POST':
         formulario = Pagina_formulario(request.POST,request.FILES)
         
         if formulario.is_valid():
             datos = formulario.cleaned_data
-            pagina = Posteo(titulo = datos['titulo'],subtitulo = datos['subtitulo'],pelicula = datos['pelicula'],cuerpo = datos['cuerpo'],autor = datos['autor'],fecha = datos['fecha'],imagen = datos['imagen'],)
+            pagina = Posteo(titulo = datos['titulo'],
+                            subtitulo = datos['subtitulo'],
+                            pelicula = datos['pelicula'],
+                            cuerpo = datos['cuerpo'],
+                            autor = datos['autor'],
+                            fecha = datos['fecha'],
+                            imagen = datos['imagen']
+                            )
             pagina.save()
             texto = f'Post creado con exito'
             paginas = Posteo.objects.all()
 
-            return render(request,'paginas.html',{'texto':texto,'avatar':avatar,'paginas':paginas})
-            
+            return render(request,'paginas.html',{'texto':texto,
+                                                  'avatar':avatar,
+                                                  'paginas':paginas
+                                                  })
         else:
             texto = f'error en uno de los campos'
             return render(request,'alta_paginas.html',{'texto':texto,'avatar':avatar})
@@ -277,7 +342,11 @@ def alta_pagina (request):
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     usuario = request.user.username
                                   
-    return render (request,'alta_paginas.html',{'avatar':avatar,'fecha':fecha,'usuario':usuario,'formulario':formulario})
+    return render (request,'alta_paginas.html',{'avatar':avatar,
+                                                'fecha':fecha,
+                                                'usuario':usuario,
+                                                'formulario':formulario
+                                                })
 
 
 def buscar_pelicula(request):    
@@ -288,16 +357,24 @@ def buscar_pelicula(request):
             peliculas = Pelicula.objects.filter(nombre__icontains=nombre)
             
             if peliculas:
-                return render (request,'res_busc_peli.html', {'peliculas':peliculas,'peli':nombre,'avatar':avatar})
+                return render (request,'res_busc_peli.html', {'peliculas':peliculas,
+                                                              'peli':nombre,
+                                                              'avatar':avatar
+                                                              })
             else:
                 peliculas = Pelicula.objects.all()
                 texto2 = f'no se han encontrado peliculas conteniendo "{nombre}"'
-                return render (request,'peliculas.html', {"peliculas":peliculas,"texto2":texto2,'avatar':avatar})
-               
+                return render (request,'peliculas.html', {"peliculas":peliculas,
+                                                          "texto2":texto2,
+                                                          'avatar':avatar
+                                                          })
         else:
             peliculas = Pelicula.objects.all()
             texto = f'Ingrese un texto en el campo de búsqueda'
-            return render (request,'peliculas.html', {"peliculas":peliculas,"texto":texto,'avatar':avatar})
+            return render (request,'peliculas.html', {"peliculas":peliculas,
+                                                      "texto":texto,
+                                                      'avatar':avatar
+                                                      })
        
 
 def buscar_pagina (request):
@@ -308,16 +385,24 @@ def buscar_pagina (request):
             paginas = Posteo.objects.filter(pelicula__icontains=nombre)
 
             if paginas:
-                return render (request,'res_busc_pagina.html', {'paginas':paginas,'nombre':nombre,'avatar':avatar})
+                return render (request,'res_busc_pagina.html', {'paginas':paginas,
+                                                                'nombre':nombre,
+                                                                'avatar':avatar
+                                                                })
             else:
                 paginas = Posteo.objects.all()
                 texto2 = f'no se han encontrado peliculas conteniendo "{nombre}"'
-                return render (request,'paginas.html', {"paginas":paginas,"texto2":texto2,'avatar':avatar})   
-
+                return render (request,'paginas.html', {"paginas":paginas,
+                                                        "texto2":texto2,
+                                                        'avatar':avatar
+                                                        })   
     else:
         paginas = Posteo.objects.all()
         texto = f'Ingrese un texto en el campo de búsqueda'
-        return render (request,'paginas.html', {"paginas":paginas,"texto":texto,'avatar':avatar})
+        return render (request,'paginas.html', {"paginas":paginas,
+                                                "texto":texto,
+                                                'avatar':avatar
+                                                })
 
 
 @login_required
@@ -326,6 +411,7 @@ def eliminar_pagina(request, id):
         pagina = Posteo.objects.get(id=id)
         pagina.delete()
         paginas = Posteo.objects.all()
+
         return render (request,'paginas.html',{"paginas":paginas,'avatar':avatar})
 
 
@@ -348,18 +434,30 @@ def editar_pagina (request, id):
             paginas.editado = datos['editado']            
             paginas.save()
 
-            paginas = Posteo.objects.all()           
-            return render (request,'paginas.html',{"paginas":paginas,'avatar':avatar})
+            pagina = Posteo.objects.get(id=id)           
+            return render (request,'pagina.html',{"pagina":pagina,'avatar':avatar})
         else:
             texto = f"algunos campos contienen errores"
-            #return HttpResponse(texto)
-            return render (request, 'form_editar_pagina.html', {'paginas':paginas, 'texto':texto,'avatar':avatar})
-    
-    
-    formulario = Editar_Pagina(initial={'titulo':paginas.titulo,'subtitulo':paginas.subtitulo,'pelicula':paginas.pelicula,'cuerpo':paginas.cuerpo})
+            
+            return render (request, 'form_editar_pagina.html', {'paginas':paginas,
+                                                                'texto':texto,
+                                                                'avatar':avatar
+                                                                })
+    formulario = Editar_Pagina(initial={'titulo':paginas.titulo,
+                                        'subtitulo':paginas.subtitulo,
+                                        'pelicula':paginas.pelicula,
+                                        'cuerpo':paginas.cuerpo
+                                        })
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")    
     usuario = request.user.username
-    return render (request,'form_editar_pagina.html', {'paginas':paginas,'fecha':fecha, 'usuario':usuario,'avatar':avatar,'formulario':formulario})
+
+    return render (request,'form_editar_pagina.html', {'paginas':paginas,
+                                                       'fecha':fecha,
+                                                       'usuario':usuario,
+                                                       'avatar':avatar,
+                                                       'formulario':formulario
+                                                       })
+
 
 @login_required
 def editar_imagen_pagina (request, id):
@@ -378,13 +476,17 @@ def editar_imagen_pagina (request, id):
         else:
             texto = f'la imagen no es de un formato valido'
             pagina = Posteo.objects.get(id=id)
-            return render(request,'pagina.html',{'pagina':pagina,'texto':texto,'avatar':avatar})
-
-    else: 
-                
+            return render(request,'pagina.html',{'pagina':pagina,
+                                                 'texto':texto,
+                                                 'avatar':avatar
+                                                 })
+    else:        
         formulario = Pagina_formulario(initial={'imagen':imagen.imagen})
 
-    return render (request,'editar_imagen_pagina.html', {'formulario':formulario,'imagen':imagen,'avatar':avatar})
+    return render (request,'editar_imagen_pagina.html', {'formulario':formulario,
+                                                         'imagen':imagen,
+                                                         'avatar':avatar
+                                                         })
 
 
 @login_required
@@ -395,8 +497,13 @@ def perfil (request, id):
     usuario = request.user.username
     paginas = Posteo.objects.filter(autor=request.user.username)
     mensajes = Mensaje.objects.filter(autor=request.user.username)
-                                     
-    return render (request,'perfil.html', {'avatar':avatar,'paginas':paginas,'datos':datos,'mensajes':mensajes,'usuario':usuario})
+
+    return render (request,'perfil.html', {'avatar':avatar,
+                                           'paginas':paginas,
+                                           'datos':datos,
+                                           'mensajes':mensajes,
+                                           'usuario':usuario,
+                                           })
     
 
 @login_required
@@ -406,13 +513,13 @@ def panel (request):
     mensajes = Mensaje.objects.all()
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))    
 
-    return render (request,'panel.html',{'peliculas':peliculas,'paginas':paginas,'mensajes':mensajes,'avatar':avatar})
+    return render (request,'panel.html',{'peliculas':peliculas,
+                                         'paginas':paginas,
+                                         'mensajes':mensajes,
+                                         'avatar':avatar
+                                         })
     
 
 def acerca(request):
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))    
     return render (request,'acerca.html',{'avatar':avatar})
-    
-   
-
-

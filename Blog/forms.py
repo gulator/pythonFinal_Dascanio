@@ -56,7 +56,6 @@ class Mensaje_formulario(forms.Form):
 
 
 class Editar_Mensaje_formulario(forms.Form):
-    
     fecha = forms.DateTimeField()    
     comentario = forms.CharField(widget=forms.Textarea)    
     editado = forms.CharField(max_length=10)
@@ -69,7 +68,7 @@ class Pagina_formulario(forms.Form):
     cuerpo = forms.CharField (widget=forms.Textarea)    
     autor = forms.CharField(max_length=40)
     fecha = forms.DateTimeField()
-    imagen = forms.ImageField()
+    imagen = forms.ImageField(required=False)
 
 class Pagina_Crear(forms.ModelForm):
     class Meta:
@@ -112,7 +111,6 @@ class Editar_Imagen(forms.Form):
 
 
 class RegisterUserForm (UserCreationForm):
-
     email = forms.EmailField(label='Mail', widget=forms.EmailInput(attrs={'class':'form-control','Style':'width: 300px','placeholder':'Ej: mail@mail.com'}))
     password1 = forms.CharField(label=('Contraseña'), widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 300px','placeholder':'ingrese una contraseña'}))
     password2 = forms.CharField(label=('Confirmar'), widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 300px','placeholder':'repita la contraseña'}))
@@ -121,7 +119,6 @@ class RegisterUserForm (UserCreationForm):
         model = User
         fields = ['username','email','password1','password2']
         help_texts = {k:"" for k in fields}    
-      
 
     def __init__(self, *args, **kwargs):
             super(UserCreationForm, self).__init__(*args, **kwargs)
@@ -130,27 +127,34 @@ class RegisterUserForm (UserCreationForm):
             self.fields['username'].widget.attrs['placeholder'] ='elija su usuario'
 
 
-class Login_formulario (AuthenticationForm):    
-
+class Login_formulario (AuthenticationForm):   
     class Meta:
         model = User
         fields = ['username', 'password']
 
-class Editar_Usuario_Form (UserCreationForm):
 
-    first_name = forms.CharField(label=('Nombre'), required=False, widget=forms.TextInput(attrs={'class':'form-control','Style':'width: 300px'}))
-    last_name = forms.CharField(label=('Apellido'), required=False, widget=forms.TextInput(attrs={'class':'form-control','Style':'width: 300px'}))
-    email = forms.EmailField(label='Mail', required=False, widget=forms.EmailInput(attrs={'class':'form-control','Style':'width: 300px'}))
-    password1 = forms.CharField(label=('Contraseña'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 300px'}))
-    password2 = forms.CharField(label=('Confirmar'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 300px'}))
+class Editar_Usuario_Form (UserCreationForm):
+    first_name = forms.CharField(label=('Nombre'), required=False, widget=forms.TextInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    last_name = forms.CharField(label=('Apellido'), required=False, widget=forms.TextInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    email = forms.EmailField(label='Mail', required=False, widget=forms.EmailInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    password1 = forms.CharField(label=('Contraseña'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    password2 = forms.CharField(label=('Confirmar'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
 
     class Meta:
         model = User
-        fields = ['email','password1','password2','first_name','last_name']
-        help_texts = {k:"" for k in fields}  
+        fields = ['first_name','last_name','email','password1','password2',]
+        help_texts = {k:"" for k in fields} 
+
+class CambiarPassword (UserCreationForm):
+    password1 = forms.CharField(label=('Contraseña'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
+    password2 = forms.CharField(label=('Confirmar'), required=False, widget=forms.PasswordInput(attrs={'class':'form-control','Style':'width: 450px'}))
+
+    class Meta:
+        model = User
+        fields = ['password1','password2',]
+        help_texts = {k:"" for k in fields}
 
 class Avatar_Formulario(forms.Form):
-    
     imagen = forms.ImageField()
     
     

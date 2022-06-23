@@ -25,55 +25,23 @@
                     <br>
                     <img src="{{avatar}}" alt="Avatar" class="avatar-perfil"><br><br>
                     <button class="btn btn-secondary btn-sm" style="padding: 1%;">cambiar avatar</button>
-                </div>
-            </form>
+                    <p>{{prueba.id}}</p>
                     
+                </div>
+            </form>           
             <form action="/Cuentas/editar_usuario" method="POST" style="width: 60%;">
                 {% csrf_token %}
                 <div class="col" style="width: 80%;">
-                    <h3 style="color: rgb(236, 255, 168);">{{usuario}}</h3><br>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Nombre</span>
-                        <input type="text" class="form-control form-control-sm oscuro" name="first_name" value="{{datos.first_name}}">
+                    <div style="margin-left: 10% ;margin-right: 10%;">
+                        <h3 style="color: rgb(236, 255, 168);">{{usuario}}</h3>
+                        {{formulario.as_p}}
+                        <div style="text-align: center;">
+                            <button class="btn btn-secondary btn-sm" type="submit" style="padding: 1%;">Actualizar perfil</button>
+                        </div>
                     </div>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Apellido</span>
-                        <input type="text" class="form-control form-control-sm oscuro" name="last_name" value="{{datos.last_name}}">
-                    </div>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Mail</span>
-                        <input type="email" class="form-control form-control-sm oscuro" name="email" value="{{datos.email}}">
-                    </div>
-    
-                    <hr class="linea">    
-                    <!--<div class="text-muted-it-cream" style="font-size: 11px; color:rgb(236, 255, 168);">
-                        Cambiar Contraseña
-                    </div>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Contraseña</span>
-                        <input type="password" class="form-control form-control-sm oscuro" name="password1" value="{{datos.password}}">
-                    </div>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Repetir</span>
-                        <input type="password" class="form-control form-control-sm oscuro" name="{{datos.password}}">
-                    </div>-->
-                    <div style="text-align: center;">
-                        <button class="btn btn-secondary btn-sm" type="submit" style="padding: 1%;">Actualizar perfil</button>
-                    </div><br>
-                    
+                   
                 </div>    
             </form>
-        </div>
-        <div class="row row-cols-1 row-cols-md-2 g-2">
-            <div class="col" style="width: 40%;">
-            </div>
-            <div class="col" style="width: 60%;">
-                <form action="/Cuentas/cambiar_password" style="width: 80%;">
-                    <div style="text-align: center;width: 100%;align-items: center;">
-                        <button class="btn btn-secondary btn-sm" style="padding: 1%;">cambiar contraseña</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div><br>
 </div>

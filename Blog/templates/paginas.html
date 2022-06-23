@@ -66,13 +66,13 @@
   <div class="container"> 
   
     <div class="row row-cols-1 row-cols-md-2 g-2">
-      {% for n in paginas%}
+      {% for n in paginas %}
       <div class="col">
         <div>
 
         </div>
         <div class="card mb-4" style="max-width: 480px;">
-          <a href="#!"><img class="card-img-top" src="{{n.imagen.url}}" alt="..." /></a>
+          <a href="{% url 'pagina_single' n.id %}"><img class="card-img-top" src="{{n.imagen.url}}" alt="..." /></a>
           <div class="card-body" style="height: 200px;">
               <div class="small text-muted tinny">{{n.autor}} | {{n.fecha}}</div>
               <div class="small text-muted "><strong>Pelicula: {{n.pelicula}}</strong></div>

@@ -25,8 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicio, name='inicio'),
     path('Blog/', include('Blog.urls')),
-    path('Cuentas/', include('Cuentas.urls')),
-    #path('Login/', lambda req: redirect('/Blog/login'))
+    path('Cuentas/', include('Cuentas.urls')),    
 ]
 
 if settings.DEBUG:
