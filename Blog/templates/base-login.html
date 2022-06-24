@@ -27,6 +27,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'paginas' %}">Paginas</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'peliculas' %}">Peliculas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'series' %}">Series</a></li> 
                         {% if user.is_staff == 1 %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'panel' %}">Panel</a></li>
                         {% endif %}

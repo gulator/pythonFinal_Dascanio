@@ -14,11 +14,15 @@
 					<h3 style="color: rgb(236, 255, 168);">Editar Pelicula</h3>
 
 					{% if texto %}
-
 					<div class="alert alert-danger" role="alert" style="text-align: center;">
 					{{texto}}
 					</div>
+					{% endif %}
 					
+					{% if alerta %}
+					<div class="alert alert-danger" role="alert" style="text-align: center;">
+					{{alerta}}
+					</div>
 					{% endif %}
 
 					{{formulario.media}}

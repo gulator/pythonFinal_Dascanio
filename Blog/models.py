@@ -33,10 +33,24 @@ class Pelicula (models.Model):
     trama_breve = models.CharField(max_length=250)
     trama_larga = RichTextField(blank=True, null=True)
     anio = models.IntegerField()
+    autor = models.CharField(max_length=40)
+    fecha = models.DateTimeField()
     imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
 
     def __str__(self):
         return f'Pelicula: {self.nombre}'
+
+class Serie (models.Model):
+    nombre = models.CharField(max_length=60)
+    resumen = models.CharField(max_length=250)
+    trama = RichTextField(blank=True, null=True)
+    anio = models.IntegerField()
+    autor = models.CharField(max_length=40)
+    fecha = models.DateTimeField()
+    imagen = models.ImageField(upload_to = ruta, null=True, blank=True)
+
+    def __str__(self):
+        return f'Serie: {self.nombre}'
 
 class Mensaje (models.Model):
     autor = models.CharField(max_length=60)

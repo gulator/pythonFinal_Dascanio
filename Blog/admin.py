@@ -5,5 +5,6 @@ from Blog.models import *
 
 admin.site.register(Posteo)
 admin.site.register(Pelicula)
+admin.site.register(Serie)
 admin.site.register(Mensaje)
 admin.site.register(Avatar)

@@ -4,7 +4,7 @@ from tkinter import Widget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Pelicula, Posteo
+from .models import Pelicula, Posteo, Serie
 from ckeditor.fields import RichTextField,RichTextFormField
 
 
@@ -14,6 +14,8 @@ class Pelicula_formulario(forms.Form):
     trama_larga = forms.CharField(widget=forms.Textarea)
     anio = forms.IntegerField()
     imagen = forms.ImageField()
+    autor = forms.CharField(max_length=60)
+    fecha = forms.DateTimeField()  
 
 class Pelicula_Crear(forms.ModelForm):
 
@@ -157,5 +159,43 @@ class CambiarPassword (UserCreationForm):
 class Avatar_Formulario(forms.Form):
     imagen = forms.ImageField()
     
-    
+
+class Serie_formulario(forms.Form):
+    nombre = forms.CharField(max_length=60)
+    resumen = forms.CharField(max_length=250,widget=forms.Textarea)
+    trama = forms.CharField(widget=forms.Textarea)
+    anio = forms.IntegerField()
+    imagen = forms.ImageField()
+    autor = forms.CharField(max_length=60)
+    fecha = forms.DateTimeField()  
+
+class Serie_Crear(forms.ModelForm):
+
+    nombre = forms.CharField(max_length=60, label=('Nombre de la serie:'), widget=forms.TextInput(attrs={'class':'form-control'}))
+    resumen = forms.CharField(max_length=250, label=('Resumen:'), widget=forms.Textarea(attrs={'class':'form-control','rows':"4"}))    
+    anio = forms.IntegerField(label=('Año:'), widget=forms.NumberInput(attrs={'class':'form-control'}))
+    class Meta:
+        model = Serie
+        fields = ('nombre', 'resumen', 'trama', 'anio', 'imagen')   
+    Widget = {
+        'trama' : forms.Textarea(attrs={'class': 'form-control'})
+    }
+
+class Editar_Serie(forms.ModelForm):
+
+    nombre = forms.CharField(max_length=60, label=('Nombre de la serie:'), required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    resumen = forms.CharField(max_length=250, label=('Resumen:'), required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':"4"}))    
+    anio = forms.IntegerField(label=('Año:'), required=False, widget=forms.NumberInput(attrs={'class':'form-control'}))
+    class Meta:
+        model = Serie
+        fields = ('nombre', 'resumen', 'trama', 'anio')   
+    Widget = {
+        'trama' : forms.Textarea(attrs={'class': 'form-control'})
+    }    
+
+class Editar_Serie_Formulario(forms.Form):
+    nombre = forms.CharField(max_length=60)
+    resumen = forms.CharField(max_length=250, widget=forms.Textarea)
+    trama = forms.CharField (widget=forms.Textarea)
+    anio = forms.IntegerField()    
 

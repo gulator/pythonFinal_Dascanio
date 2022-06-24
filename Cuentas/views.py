@@ -25,8 +25,10 @@ def imagenAvatar(a,**kwargs):
 
 def login_request (request):
     
-    archivos = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
-    portada = random.choice(archivos)
+    archivos_pelis = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg','image7.jpg','image8.jpg','image9.jpg','image10.jpg']
+    archivos_series = ['imgseries01.jpg','imgseries02.jpg','imgseries03.jpg','imgseries04.jpg','imgseries05.jpg','imgseries06.jpg','imgseries07.jpg','imgseries08.jpg','imgseries09.jpg','imgseries10.jpg']
+    portada = random.choice(archivos_pelis)
+    portada_series = random.choice(archivos_series)
     
     if request.method == 'POST':
         
@@ -41,7 +43,7 @@ def login_request (request):
             if user is not None:
                 login(request,user)
                 avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))                                     
-                return render (request,'inicio.html',{'avatar':avatar,'portada':portada})                
+                return render (request,'inicio.html',{'avatar':avatar,'portada':portada,'portada_series':portada_series})                
             else:
                 return render (request,'login.html',{'mensaje':"Error. Formulario erroneo."})    
 
@@ -119,7 +121,12 @@ def editar_usuario (request):
                                                'paginas':paginas,
                                                'datos':datos,
                                                'usuario':usuario,})
-         
+
+def borrar_avatar (request, id):
+    avatar = Avatar.objects.filter(user_id=id)
+    avatar.delete()
+
+    return redirect('perfil',id)
 
 @login_required
 def editar_avatar(request):
@@ -153,10 +160,12 @@ def editar_avatar(request):
     
     avatares = Avatar.objects.filter(user=request.user.id)
     
-    if avatares:
-        avatar = Avatar.objects.filter(user=request.user.id)  
+    if len (avatares)>0:
+        print('ANDAAAA')
+        avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id)) 
         return render(request,'editar_avatar.html',{'avatar':avatar})
     else:
+        print ('NO ANDDAAAA')
         usuario = request.user.id
         imagenes = Avatar (imagen="avatares/noavatar.webp",user_id=usuario)
         imagenes.save()
@@ -197,3 +206,4 @@ def cambiar_password(request):
     else:
         formulario = CambiarPassword()
         return render (request, 'cambiar_password.html',{'avatar':avatar,'formulario':formulario})
+

@@ -10,7 +10,7 @@
     			
 					{% csrf_token %}
 
-					<h3 style="color: rgb(236, 255, 168);">Crear una Pelicula</h3>
+					<h3 style="color: rgb(236, 255, 168);">Nueva Pelicula</h3>
 
 					{% if texto %}
 
@@ -23,6 +23,8 @@
 					{{formulario.media}}
 					{{formulario.as_p}}
 
+					<input type="hidden" name="autor" value="{{autor}}">
+					<input type="hidden" name="fecha" value="{{fecha}}">
 					<button class="btn btn-secondary" type="submit">Crear</button>
 
 				</form>

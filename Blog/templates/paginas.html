@@ -80,7 +80,7 @@
           <a href="{% url 'pagina_single' n.id %}"><img class="card-img-top" src="{{n.imagen.url}}" alt="..." /></a>
           <div class="card-body" style="height: 200px;">
               <div class="small text-muted tinny">{{n.autor}} | {{n.fecha}}</div>
-              <div class="small text-muted "><strong>Pelicula: {{n.pelicula}}</strong></div>
+              <div class="small text-muted "><strong>Pelicula/Serie: {{n.pelicula}}</strong></div>
               <h2 class="card-title h4" style="color: #434649;">{{n.titulo}}</h2>
               <p class="card-text" style="color: #434649;">{{n.subtitulo}}</p>
               <a href="{% url 'pagina_single' n.id %}" class="text-muted-it-grey small paginas" style="align-items: bottom;"">Leer mas...</a>

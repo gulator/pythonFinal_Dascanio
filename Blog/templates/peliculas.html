@@ -73,8 +73,8 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title" style="color: #434649;">{{n.nombre}}</h5>
-              <p class="card-text"><small class="text-muted">{{n.anio}}</small></p>
+              <h5 class="card-title" style="color: #434649;">{{n.nombre}} ({{n.anio}})</h5>
+              <div class="small text-muted tinny">{{n.autor}} | {{n.fecha}}</div>              
               <p class="card-text justificado" style="color: #434649;">{{n.trama_breve}}</p>
               <a href="{% url 'pelicula_single' n.id %}" class="text-muted-it-grey small abajo" style="align-items: bottom;"">Leer mas...</a>
             </div>

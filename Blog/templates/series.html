@@ -1,0 +1,99 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<div>
+    {% if not series %}
+  <div class="alert alert-warning" role="alert" style="text-align: center;">
+    {{vacio}}
+  </div>
+    {% endif %}
+</div> 
+<div>
+  {% if texto2%}
+<div class="alert alert-warning" role="alert" style="text-align: center;">
+  {{texto2}}
+</div>
+{% endif %}
+{% if texto%}
+<div class="alert alert-danger" role="alert" style="text-align: center;">
+  {{texto}}
+</div>
+{% endif %}
+</div>
+<!--Boton alta Pelicula -->
+
+<div class="row">
+  <div class="col" style="width: 20%;">
+    <form action="/Blog/alta_serie">  
+      <div class="container">
+        <div align="left" style="margin: auto;width: 400px;align-content: center;">
+          <div class="row">          
+            <div class="col">
+              <i style="color: red; text-align: right;font-size:medium"><!--{{respuesta}}--></i>
+              <div class="input-group mb-3">
+                {% if user.is_authenticated %}
+                <input class="btn btn-success" type="submit" class="form-control" value="Nueva Serie">
+                {% endif %}
+              </div>
+            </div>  
+          </div>  
+        </div>
+      </div>    
+    </form>
+  </div>
+  <div class="col" style="width: 65%;">
+  </div>
+  {% if series %}
+  <!--buscar-->
+  <div class="col" style="width: 15%;">
+    <form action="/Blog/buscar_serie">  
+      <div class="container">
+        <div style="margin-left: 38%;width: 250px;">
+          <div class="row">          
+            <div class="col">
+              <i style="color: red; text-align: right;font-size:medium"><!--{{respuesta}}--></i>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="buscar" name="nombre">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2" ><i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg></i></button>
+              </div>
+            </div>  
+          </div>  
+        </div>
+      </div>    
+    </form>
+  </div>
+</div>
+{% endif %}
+
+
+<!--Listado series disponibles-->
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for n in series %}
+    <div class="col">
+      <div class="card mb-4" style="max-width: 480px;">      
+        <div class="row g-0">    
+          <div class="col-md-4">
+            <img src="{{n.imagen.url}}" class="img-pelis rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title" style="color: #434649;">{{n.nombre}} ({{n.anio}})</h5>
+              <div class="small text-muted tinny">{{n.autor}} | {{n.fecha}}</div><br>
+              <p class="card-text justificado" style="color: #434649;">{{n.resumen}}</p>
+              <a href="{% url 'serie_single' n.id %}" class="text-muted-it-grey small abajo" style="align-items: bottom;"">Leer mas...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %} 
+  </div> 
+</div>
+
+
+
+{% endblock %}

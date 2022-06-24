@@ -1,3 +1,4 @@
+from queue import Empty
 from time import strftime
 from urllib import request
 from django.shortcuts import render
@@ -29,7 +30,7 @@ def imagenAvatar(a,**kwargs):
 
 def inicio (request):    
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
-    archivos = ['image1.jpg',
+    archivos_pelis = ['image1.jpg',
                 'image2.jpg',
                 'image3.jpg',
                 'image4.jpg',
@@ -40,9 +41,22 @@ def inicio (request):
                 'image9.jpg',
                 'image10.jpg'
                 ]
-    portada = random.choice(archivos) 
+    archivos_series = [
+        'imgseries01.jpg',
+        'imgseries02.jpg',
+        'imgseries03.jpg',
+        'imgseries04.jpg',
+        'imgseries05.jpg',
+        'imgseries06.jpg',
+        'imgseries07.jpg',
+        'imgseries08.jpg',
+        'imgseries09.jpg',
+        'imgseries10.jpg',
+    ]
+    portada = random.choice(archivos_pelis)
+    portada_series = random.choice(archivos_series) 
     
-    return render (request,'inicio.html', {'avatar':avatar,'portada':portada})
+    return render (request,'inicio.html', {'avatar':avatar,'portada':portada,'portada_series':portada_series})
 
 
 def paginas (request):
@@ -127,6 +141,8 @@ def pelicula_single(request, id):
 
 @login_required
 def pelicula_borrar(request, id):
+    mensajes = Mensaje.objects.filter(id_clase=id,clase="pelicula")
+    mensajes.delete()
     pelicula = Pelicula.objects.get(id=id)
     pelicula.delete()
     peliculas = Pelicula.objects.all()
@@ -139,6 +155,7 @@ def pelicula_borrar(request, id):
 def editar_pelicula(request, id):
     pelicula = Pelicula.objects.get(id=id)
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+    
 
     if request.method == 'POST':
         formulario = Editar_Pelicula_Formulario(request.POST)
@@ -151,7 +168,20 @@ def editar_pelicula(request, id):
             pelicula.anio = datos['anio']
             pelicula.save()
 
-            return redirect('pelicula_single', id) 
+            return redirect('pelicula_single', id)
+        else:
+            alerta = f'Todos los campos deben estar completados'
+            formulario = Editar_Pelicula(initial={'nombre':pelicula.nombre,
+                                              'trama_breve':pelicula.trama_breve,
+                                              'trama_larga':pelicula.trama_larga,
+                                              'anio':pelicula.anio
+                                              })
+            return render (request,'form_editar_pelicula.html', {'formulario':formulario,
+                                                         'pelicula':pelicula,
+                                                         'avatar':avatar,
+                                                         'alerta':alerta
+                                                         })
+
     else:         
         formulario = Editar_Pelicula(initial={'nombre':pelicula.nombre,
                                               'trama_breve':pelicula.trama_breve,
@@ -185,6 +215,9 @@ def editar_imagen_pelicula(request, id):
 @login_required
 def alta_pelicula (request):
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+    autor = request.user.username
+    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
     if request.method == 'POST':
         formulario = Pelicula_formulario(request.POST, request.FILES)
@@ -195,7 +228,9 @@ def alta_pelicula (request):
                                 trama_breve = datos['trama_breve'],
                                 trama_larga = datos['trama_larga'],
                                 anio = datos['anio'],
-                                imagen = datos['imagen']
+                                imagen = datos['imagen'],
+                                autor = datos['autor'],
+                                fecha = datos['fecha']
                                 )
             pelicula.save()            
             peliculas = Pelicula.objects.all()
@@ -206,7 +241,11 @@ def alta_pelicula (request):
             return render (request,'alta_peliculas.html',{'texto':texto,'avatar':avatar})
     
     formulario = Pelicula_Crear()                                  
-    return render (request,'alta_peliculas.html',{'avatar':avatar,'formulario':formulario})
+    return render (request,'alta_peliculas.html',{'avatar':avatar,
+                                                  'formulario':formulario,
+                                                  'autor':autor,
+                                                  'fecha':fecha
+                                                  })
     
 
 @login_required
@@ -215,6 +254,7 @@ def eliminar_mensaje (request,id):
     mensaje = Mensaje.objects.get(id=id)
     mensaje.delete()
     peliculas = Pelicula.objects.all()
+    series = Serie.objects.all()
     paginas = Posteo.objects.all()
     mensajes = Mensaje.objects.all()
     tipo_usuario = request.user.is_staff
@@ -222,6 +262,7 @@ def eliminar_mensaje (request,id):
     if tipo_usuario == 1:
          return render (request,'panel.html', {'avatar':avatar,
                                                'peliculas':peliculas,
+                                               'series':series,
                                                'paginas':paginas,
                                                'mensajes':mensajes
                                                })
@@ -230,13 +271,15 @@ def eliminar_mensaje (request,id):
         usuario = request.user.username
         paginas = Posteo.objects.filter(autor=request.user.username)
         mensajes = Mensaje.objects.filter(autor=request.user.username)
+        series = Serie.objects.filter(autor=request.user.username)
         
                                         
         return render (request,'perfil.html', {'avatar':avatar,
                                                'paginas':paginas,
                                                'datos':datos,
                                                'mensajes':mensajes,
-                                               'usuario':usuario
+                                               'usuario':usuario,
+                                               'series':series
                                                })
     
 
@@ -402,6 +445,8 @@ def buscar_pagina (request):
 @login_required
 def eliminar_pagina(request, id):
         avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+        mensajes = Mensaje.objects.filter(id_clase=id,clase="pagina")
+        mensajes.delete()
         pagina = Posteo.objects.get(id=id)
         pagina.delete()
         paginas = Posteo.objects.all()
@@ -504,18 +549,33 @@ def perfil (request, id):
     usuario = request.user.username
     paginas = Posteo.objects.filter(autor=request.user.username)
     mensajes = Mensaje.objects.filter(autor=request.user.username)
+    series = Serie.objects.filter(autor=request.user.username)
+    foto_perfil = request.user.id
+    verificacion = len (Avatar.objects.filter(user=request.user.id))
 
-    return render (request,'perfil.html', {'avatar':avatar,
-                                           'paginas':paginas,
-                                           'datos':datos,
-                                           'mensajes':mensajes,
-                                           'usuario':usuario,
+    if verificacion > 0:
+        return render (request,'perfil.html',{'avatar':avatar,
+                                                'paginas':paginas,
+                                                'datos':datos,
+                                                'mensajes':mensajes,
+                                                'usuario':usuario,
+                                                'series':series,
+                                                'foto_perfil':foto_perfil
+                                           })
+    else:
+        return render (request,'perfil.html',{'avatar':avatar,
+                                                'paginas':paginas,
+                                                'datos':datos,
+                                                'mensajes':mensajes,
+                                                'usuario':usuario,
+                                                'series':series,                                                
                                            })
     
 
 @login_required
 def panel (request):
     peliculas = Pelicula.objects.all()
+    series = Serie.objects.all()
     paginas = Posteo.objects.all()
     mensajes = Mensaje.objects.all()
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))    
@@ -523,10 +583,198 @@ def panel (request):
     return render (request,'panel.html',{'peliculas':peliculas,
                                          'paginas':paginas,
                                          'mensajes':mensajes,
-                                         'avatar':avatar
+                                         'avatar':avatar,
+                                         'series':series
                                          })
     
 
 def acerca(request):
     avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))    
     return render (request,'acerca.html',{'avatar':avatar})
+
+
+
+
+
+
+def series (request):
+    series = Serie.objects.all()
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+    vacio = f'No hay series para mostrar aun'
+    
+    return render (request,'series.html', {'series':series,'avatar':avatar, 'vacio':vacio})
+    
+
+
+def serie_single(request, id):   
+
+    serie = Serie.objects.get(id=id)
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+    autor = request.user.username
+    mensajes = Mensaje.objects.filter(id_clase=id, clase='serie')
+    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")     
+
+    if request.method == 'POST':
+        formulario = Mensaje_formulario(request.POST, request.FILES)
+
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            mensaje = Mensaje(autor = datos['autor'],
+                              fecha = datos['fecha'],
+                              comentario = datos['comentario'],
+                              id_clase=datos['id_clase'],
+                              pelicula = datos['pelicula'],
+                              clase = datos['clase']
+                              )
+            mensaje.save()
+        else:
+            msg_vacio = f"¡debes escribir algo!"
+            (request,'serie.html', {'serie':serie,
+                                    'avatar':avatar,
+                                    'mensajes':mensajes,
+                                    'autor':autor,
+                                    'fecha':fecha,
+                                    'msg_vacio':msg_vacio
+                                    }) 
+                                      
+    return render (request,'serie.html', {'serie':serie,
+                                             'avatar':avatar,
+                                             'mensajes':mensajes,
+                                             'autor':autor,
+                                             'fecha':fecha
+                                             })
+
+
+@login_required
+def alta_serie (request):  #corregir
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+    autor = request.user.username
+    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    if request.method == 'POST':
+        formulario = Serie_formulario(request.POST, request.FILES)
+        
+        if formulario.is_valid():
+            datos = formulario.cleaned_data            
+            serie = Serie(nombre = datos['nombre'],
+                                resumen = datos['resumen'],
+                                trama = datos['trama'],
+                                anio = datos['anio'],
+                                imagen = datos['imagen'],
+                                autor = datos['autor'],
+                                fecha = datos['fecha']
+                                )
+            serie.save()            
+            series = Serie.objects.all()
+                                  
+            return render (request,'series.html', {'series':series,'avatar':avatar})
+        else:
+            texto = f"error en uno de los campos"
+            return render (request,'alta_series.html',{'texto':texto,'avatar':avatar})
+    
+    formulario = Serie_Crear()                                  
+    return render (request,'alta_series.html',{'avatar':avatar,
+                                                  'formulario':formulario,
+                                                  'autor':autor,
+                                                  'fecha':fecha
+                                                  })
+
+@login_required
+def eliminar_serie (request, id):
+    
+    mensajes = Mensaje.objects.filter(id_clase=id,clase="serie")
+    mensajes.delete()
+    serie = Serie.objects.get(id=id)
+    serie.delete()
+    series = Serie.objects.all()
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+                                 
+    return render (request,'series.html', {'series':series,'avatar':avatar})
+   
+
+@login_required
+def editar_serie(request, id): #corregir
+    serie = Serie.objects.get(id=id)
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+
+    if request.method == 'POST':
+        formulario = Editar_Serie_Formulario(request.POST)
+
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            serie.nombre = datos['nombre']
+            serie.resumen = datos['resumen']
+            serie.trama = datos['trama']
+            serie.anio = datos['anio']
+            serie.save()
+
+            return redirect('serie_single', id)
+        else:
+            alerta = f'Todos los campos deben estar completados'
+            formulario = Editar_Serie(initial={'nombre':serie.nombre,
+                                              'resumen':serie.resumen,
+                                              'trama':serie.trama,
+                                              'anio':serie.anio
+                                              })
+            return render (request,'form_editar_serie.html', {'formulario':formulario,
+                                                         'serie':serie,
+                                                         'avatar':avatar,
+                                                         'alerta':alerta
+                                                         })
+    else:         
+        formulario = Editar_Serie(initial={'nombre':serie.nombre,
+                                              'resumen':serie.resumen,
+                                              'trama':serie.trama,
+                                              'anio':serie.anio
+                                              }) 
+                                      
+    return render (request,'form_editar_serie.html', {'formulario':formulario,
+                                                         'serie':serie,
+                                                         'avatar':avatar
+                                                         })
+    
+
+@login_required
+def editar_imagen_serie(request, id):  #corregir
+    imagen = Serie.objects.get(id=id)
+    avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+
+    if request.method == 'POST':
+        formulario = Editar_Imagen(request.POST, request.FILES)
+        if formulario.is_valid():
+            datos = formulario.cleaned_data
+            imagen.imagen=datos['imagen']
+            imagen.save()
+              
+            return redirect ('serie_single', id) 
+                                      
+    return render (request,'editar_imagen_serie.html', {'imagen':imagen,'avatar':avatar})    
+
+
+def buscar_serie(request):    
+        avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id))
+
+        if request.GET['nombre']:
+            nombre = request.GET['nombre']
+            series = Serie.objects.filter(nombre__icontains=nombre)
+            
+            if series:
+                return render (request,'res_busc_serie.html', {'series':series,
+                                                              'nombre':nombre,
+                                                              'avatar':avatar
+                                                              })
+            else:
+                series = Serie.objects.all()
+                texto2 = f'no se han encontrado series conteniendo "{nombre}"'
+                return render (request,'series.html', {"series":series,
+                                                          "texto2":texto2,
+                                                          'avatar':avatar
+                                                          })
+        else:
+            series = Serie.objects.all()
+            texto = f'Ingrese un texto en el campo de búsqueda'
+            return render (request,'series.html', {"series":series,
+                                                      "texto":texto,
+                                                      'avatar':avatar
+                                                      })
+

@@ -19,9 +19,10 @@
                         {% endif %}    
                         <br>
                         <br>
-                        <h5 class="card-title" style="color: white;">{{pelicula.nombre}}</h5>
-                        <p class="card-text"><small class="text-muted">{{pelicula.anio}}</small></p>
+                        <h5 class="card-title" style="color: white;">{{pelicula.nombre}} <small>({{pelicula.anio}})</small></h5>                        
+                        <p class="card-text"><small class="text-muted">{{pelicula.autor}} | {{pelicula.fecha}}</small></p>                        
                         <p class="card-text justificado-single"style="color: white;">{{pelicula.trama_breve}}</p>
+                        <hr>
                         <p >{{pelicula.trama_larga | safe}}</p>
                               
             </div>

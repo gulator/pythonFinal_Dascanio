@@ -23,6 +23,13 @@ path('eliminar_mensaje/<int:id>', views.eliminar_mensaje, name="eliminar_mensaje
 path('editar_pagina/<int:id>', views.editar_pagina, name='editar_pagina'),
 path('editar_mensaje/<int:id>', views.editar_mensaje,name='editar_mensaje'),
 path('editar_imagen_pagina/<int:id>', views.editar_imagen_pagina, name='editar_imagen_pagina'),
+path('series', views.series, name='series'),
+path('serie_single/<int:id>', views.serie_single, name='serie_single'),
+path('eliminar_serie/<int:id>', views.eliminar_serie, name='eliminar_serie'),
+path('editar_serie/<int:id>', views.editar_serie, name='editar_serie'),
+path('alta_serie', views.alta_serie, name="alta_serie"),
+path('buscar_serie', views.buscar_serie, name="buscar_serie"),
+path('editar_imagen_serie/<int:id>', views.editar_imagen_serie, name='editar_imagen_serie'),
 path('panel',views.panel, name="panel"),
 
 

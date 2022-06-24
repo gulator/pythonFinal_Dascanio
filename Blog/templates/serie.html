@@ -1,0 +1,86 @@
+{% extends 'base-principal.html' %}
+{% load static %}
+{% block bloque1 %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <div class="container">
+        <div class="row"></div>      
+            <div class="col" align="center">
+                <img src="{{serie.imagen.url}}" style="height: 360px;">
+            </div>
+            <div class="col">
+                    <div class="card-body-dark">
+                        {% if user.is_staff == 1 %}    
+                        <a class="btn btn-secondary btn-sm" href="{% url 'eliminar_serie' serie.id %}">borrar</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'editar_serie' serie.id %}">editar</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'editar_imagen_serie' serie.id %}">cambiar imagen</a>
+                        {% endif %}    
+                        <br>
+                        <br>
+                        <h5 class="card-title" style="color: white;">{{serie.nombre}} <small>({{serie.anio}})</small></h5>                        
+                        <p class="card-text"><small class="text-muted">{{serie.autor}} | {{serie.fecha}}</small></p>                        
+                        <p class="card-text justificado-single"style="color: white;">{{serie.resumen}}</p>
+                        <hr>
+                        <p >{{serie.trama | safe}}</p>
+                              
+            </div>
+        </div>           
+       
+    </div>
+</form>
+<br>{% if user.is_authenticated %}
+    <section class="mb-5">
+        <div class="card" style="background-color:rgb(53, 53, 53)">
+            <div class="card-body">
+                <!-- Comment form-->
+                <form class="mb-4" action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <textarea type="textarea" class="form-control" name="comentario" rows="3" placeholder="¡Deja tu comentario!" style="background-color: rgb(175, 175, 175);" maxlength="700"></textarea>
+                    <div><input type="hidden" value="{{fecha}}" name="fecha"></div>                    
+                    <div><input type="hidden" value="{{autor}}" name="autor"></div>
+                    <div><input type="hidden" value="{{serie.id}}" name="id_clase"></div>
+                    <div><input type="hidden" value="serie" name="clase"></div>
+                    <div><input type="hidden" value="{{serie.nombre}}" name="pelicula"></div>
+                    <br>
+                    <input type="submit" value="enviar" class="btn btn-secondary btn-sm">
+                    <br>
+                </form>
+                <!-- Comments-->  
+                <br>
+                {% for m in mensajes %}              
+                <div class="d-flex">                    
+                    <div class="ms-3">
+                        <div class="text-muted-it-cream xsmall" style="margin-left: auto; color: rgb(214, 255, 255);"><strong>{{m.autor}}</strong> {{m.fecha}} {{m.editado}}</class></div>                        
+                        <p style="color: rgb(231, 231, 231);">{{m.comentario}}</p>
+                    </div>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% else %}
+    {% if mensajes %}
+    <section class="mb-5">
+        <div class="card" style="background-color:rgb(53, 53, 53)">
+            <div class="card-body">                
+                <!-- Comments-->  
+                <br>
+                {% for m in mensajes %}              
+                <div class="d-flex">                    
+                    <div class="ms-3">
+                        <div class="text-muted-it-cream xsmall" style="margin-left: auto; color: rgb(214, 255, 255);"><strong>{{m.autor}}</strong> {{m.fecha}} {{m.editado}}</class></div>                        
+                        <p style="color: rgb(231, 231, 231);">{{m.comentario}}</p>
+                    </div>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% endif %}
+
+{% endblock %}

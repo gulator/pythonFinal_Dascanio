@@ -24,7 +24,10 @@
                 <div class="col" style="text-align: center;width: 100%;align-items: center;">
                     <br>
                     <img src="{{avatar}}" alt="Avatar" class="avatar-perfil"><br><br>
-                    <button class="btn btn-secondary btn-sm" style="padding: 1%;">cambiar avatar</button>
+                    <button class="btn btn-success btn-sm" style="padding: 1%;">cambiar avatar</button>
+                    {% if foto_perfil %}
+                    <a href="{% url 'borrar_avatar' foto_perfil %}" class="btn btn-danger btn-sm" style="padding: 1%;">borrar avatar</a>
+                    {% endif %}
                 </div>
             </form>
                     
@@ -46,17 +49,7 @@
                     </div>
     
                     <hr class="linea">    
-                    <!--<div class="text-muted-it-cream" style="font-size: 11px; color:rgb(236, 255, 168);">
-                        Cambiar Contraseña
-                    </div>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Contraseña</span>
-                        <input type="password" class="form-control form-control-sm oscuro" name="password1" value="{{datos.password}}">
-                    </div>
-                    <div class="input-group mb-3">                    
-                        <span class="input-group-text mota" id="basic-addon1">Repetir</span>
-                        <input type="password" class="form-control form-control-sm oscuro" name="{{datos.password}}">
-                    </div>-->
+                    
                     <div style="text-align: center;">
                         <button class="btn btn-secondary btn-sm" type="submit" style="padding: 1%;">Actualizar perfil</button>
                     </div><br>
@@ -113,6 +106,42 @@
             {% endif %}      
         </div>
     </div>
+<!--Series creadas por vos-->
+<div class="row">
+    <div class="col">
+        <h5 style="color: rgb(236, 255, 168);text-align: center;">Series creadas por vos</h5>
+        {% if series %}
+        <table class="table table-dark table-striped">
+            <thead>
+              <tr scope="row"> 
+                <th scope="col">ID</th>                   
+                <th scope="col">Nombre</th>
+                <th scope="col">Resumen</th>
+                <th scope="col">Imagen</th>
+              </tr>
+            </thead>
+            
+            <tbody>
+                {% for s in series %}
+              <tr>
+                <th scope="row">{{s.id}}</th>
+                <td>{{s.nombre}}</td>
+                <td>{{s.resumen}}</td>
+                <td><img src="{{s.imagen.url}}" style="height: 50px ;"></td>
+                <td><a href="{% url 'eliminar_serie' s.id %}">borrar</a></td>
+                <td><a href="{% url 'editar_serie' s.id %}">editar</a></td>
+                <td><a href="{% url 'editar_imagen_serie' s.id %}">imagen</a></td>
+              </tr> 
+              {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+              <div class="alert alert-info" role="alert" style="text-align: center;">
+                Aun no realizaste creaste ninguna Serie
+              </div>
+        {% endif %}      
+    </div>
+</div>
 
 <!--Mensajes-->    
 <div class="row">
@@ -139,8 +168,10 @@
                 <td>{{m.clase}}</td>
                 {% if m.clase == "pelicula" %}      
                 <td><a href="{% url 'pelicula_single' m.id_clase %}">ver</a></td>
+                {% elif m.clase == "pagina" %}
+                <td><a href="{% url 'pagina_single' m.id_clase %}">ver</a></td>  
                 {% else %}
-                <td><a href="{% url 'pagina_single' m.id_clase %}">ver</a></td>   
+                <td><a href="{% url 'serie_single' m.id_clase %}">ver</a></td> 
                 {% endif %}                
                 <td><a href="{% url 'eliminar_mensaje' m.id %}">borrar</a></td>
                 <td><a href="{% url 'editar_mensaje' m.id %}">editar</a></td>
