@@ -89,7 +89,14 @@ def pagina_single(request, id):
                               )
             mensaje.save()
         else:
-            print ("formulario invalido!") 
+            msg_vacio = f"¡debes escribir algo!"
+            return render (request,'pagina.html', {'pagina':pagina,
+                                    'avatar':avatar,
+                                    'mensajes':mensajes,
+                                    'autor':autor,
+                                    'fecha':fecha,
+                                    'msg_vacio':msg_vacio
+                                    })  
                                       
     return render (request,'pagina.html', {'pagina':pagina,
                                            'avatar':avatar,
@@ -129,7 +136,14 @@ def pelicula_single(request, id):
                               )
             mensaje.save()
         else:
-            print ("formulario invalido!") 
+            msg_vacio = f"¡debes escribir algo!"
+            return render (request,'pelicula.html', {'pelicula':pelicula,
+                                    'avatar':avatar,
+                                    'mensajes':mensajes,
+                                    'autor':autor,
+                                    'fecha':fecha,
+                                    'msg_vacio':msg_vacio
+                                    }) 
                                       
     return render (request,'pelicula.html', {'pelicula':pelicula,
                                              'avatar':avatar,
@@ -628,8 +642,8 @@ def serie_single(request, id):
                               )
             mensaje.save()
         else:
-            msg_vacio = f"¡debes escribir algo!"
-            (request,'serie.html', {'serie':serie,
+            msg_vacio = f"¡debes escribir algo!"            
+            return render (request,'serie.html', {'serie':serie,
                                     'avatar':avatar,
                                     'mensajes':mensajes,
                                     'autor':autor,

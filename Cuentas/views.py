@@ -161,11 +161,9 @@ def editar_avatar(request):
     avatares = Avatar.objects.filter(user=request.user.id)
     
     if len (avatares)>0:
-        print('ANDAAAA')
         avatar = imagenAvatar(Avatar.objects.filter(user=request.user.id)) 
         return render(request,'editar_avatar.html',{'avatar':avatar})
     else:
-        print ('NO ANDDAAAA')
         usuario = request.user.id
         imagenes = Avatar (imagen="avatares/noavatar.webp",user_id=usuario)
         imagenes.save()

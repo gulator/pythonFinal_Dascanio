@@ -2,12 +2,21 @@
 {% load static %}
 {% block bloque1 %}
 
-<form action="" method="POST">
-    {% csrf_token %}
+<div class="container">
+    {% if msg_vacio %}
+    <div class="alert alert-warning" role="alert">
+    {{msg_vacio}}
+    </div>
+    {% endif %}
+</div>
+
 
     <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
         <div class="row"></div>      
             <div class="col" align="center">
+                
                 <img src="{{serie.imagen.url}}" style="height: 360px;">
             </div>
             <div class="col">
